@@ -8,7 +8,8 @@ namespace DungeonJanitor.Input
     /// <summary>
     /// The only place that talks to the Input System. Exposes player input as
     /// simple values and events, and turns the debug toggle into a bus event.
-    /// Player input is switched off while the tuning panel is open.
+    /// Player input is switched off while the tuning panel is open and once
+    /// the shift has ended.
     /// </summary>
     public sealed class InputReader : MonoBehaviour
     {
@@ -24,6 +25,7 @@ namespace DungeonJanitor.Input
         const string ToolSlotName = "ToolSlot";
         const string CycleToolName = "CycleTool";
         const string ToggleTuningName = "ToggleTuningPanel";
+        const string RestartRunName = "RestartRun";
 
         [SerializeField] InputActionAsset actions;
 
@@ -39,6 +41,9 @@ namespace DungeonJanitor.Input
         InputAction toolSlot;
         InputAction cycleTool;
         InputAction toggleTuning;
+        InputAction restartRun;
+        bool tuningOpen;
+        bool runOver;
 
         public event Action JumpPressed;
         /// <summary>Number key shortcut; zero-based slot index.</summary>
@@ -75,6 +80,7 @@ namespace DungeonJanitor.Input
             toolSlot = playerMap.FindAction(ToolSlotName, true);
             cycleTool = playerMap.FindAction(CycleToolName, true);
             toggleTuning = debugMap.FindAction(ToggleTuningName, true);
+            restartRun = debugMap.FindAction(RestartRunName, true);
         }
 
         void OnEnable()
@@ -83,7 +89,9 @@ namespace DungeonJanitor.Input
             toolSlot.performed += OnToolSlot;
             cycleTool.performed += OnCycleTool;
             toggleTuning.performed += OnToggleTuning;
+            restartRun.performed += OnRestartRun;
             EventBus<TuningPanelVisibilityChanged>.Subscribe(OnTuningPanelVisibility);
+            EventBus<RunEnded>.Subscribe(OnRunEnded);
             playerMap.Enable();
             debugMap.Enable();
         }
@@ -94,7 +102,9 @@ namespace DungeonJanitor.Input
             toolSlot.performed -= OnToolSlot;
             cycleTool.performed -= OnCycleTool;
             toggleTuning.performed -= OnToggleTuning;
+            restartRun.performed -= OnRestartRun;
             EventBus<TuningPanelVisibilityChanged>.Unsubscribe(OnTuningPanelVisibility);
+            EventBus<RunEnded>.Unsubscribe(OnRunEnded);
             playerMap.Disable();
             debugMap.Disable();
         }
@@ -118,9 +128,24 @@ namespace DungeonJanitor.Input
         void OnToggleTuning(InputAction.CallbackContext _) =>
             EventBus<TuningPanelToggleRequested>.Raise(new TuningPanelToggleRequested());
 
+        void OnRestartRun(InputAction.CallbackContext _) =>
+            EventBus<RestartRunRequested>.Raise(new RestartRunRequested());
+
         void OnTuningPanelVisibility(TuningPanelVisibilityChanged evt)
         {
-            if (evt.Visible)
+            tuningOpen = evt.Visible;
+            ApplyPlayerMap();
+        }
+
+        void OnRunEnded(RunEnded _)
+        {
+            runOver = true;
+            ApplyPlayerMap();
+        }
+
+        void ApplyPlayerMap()
+        {
+            if (tuningOpen || runOver)
                 playerMap.Disable();
             else
                 playerMap.Enable();

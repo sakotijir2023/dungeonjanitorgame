@@ -422,6 +422,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "RestartRun",
+                    "type": "Button",
+                    "id": "e80a11bc-234b-45ea-b90f-a06e60a073e0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -444,6 +453,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "ToggleTuningPanel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7bb28dd2-d149-431c-971b-3e5e68eaff83",
+                    "path": "<Keyboard>/f5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "RestartRun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0672a178-f128-4543-b565-cdcc210affd5",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RestartRun",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -18,7 +18,7 @@ MonoBehaviour:
   tugStretchAtBreak: 0.7
   tugWobbleAmount: 0.100467704
   tugWobbleFrequency: 9
-  loosenDecay: 0.4
+  loosenDecay: 0.30277783
   breakFreeImpulse: 2.5
   breakFreeJiggle: 6
   stretchPerSpeed: 0.07
@@ -26,7 +26,7 @@ MonoBehaviour:
   springStiffness: 180
   springDamping: 9
   impactJiggle: 0.6
-  swallowTime: 0.1
+  swallowTime: 0.08979167
   hardnessForDarkest: 3
   softColor: {r: 0.45, g: 0.9, b: 0.35, a: 1}
   hardColor: {r: 0.12, g: 0.35, b: 0.15, a: 1}

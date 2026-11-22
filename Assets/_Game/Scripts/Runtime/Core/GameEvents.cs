@@ -55,6 +55,35 @@ namespace DungeonJanitor.Core
         public string[] ToolIds;
     }
 
+    /// <summary>Why a run ended.</summary>
+    public enum RunEndReason
+    {
+        TimeUp,
+        AllClean,
+    }
+
+    /// <summary>Raised every frame while a run is going, for the HUD.</summary>
+    public struct RunStatusChanged
+    {
+        public float TimeLeft;
+        public float Duration;
+        public int Cleaned;
+        public int Total;
+    }
+
+    /// <summary>The run is over. TimeLeft above zero means an early finish.</summary>
+    public struct RunEnded
+    {
+        public RunEndReason Reason;
+        public float TimeLeft;
+        public float Duration;
+        public int Cleaned;
+        public int Total;
+    }
+
+    /// <summary>Pressed the restart key (F5 / Start).</summary>
+    public struct RestartRunRequested { }
+
     /// <summary>Pressed the tuning panel toggle (F1 / gamepad View button).</summary>
     public struct TuningPanelToggleRequested { }
 
