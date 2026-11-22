@@ -19,3 +19,4 @@ Format: `YYYY-MM-DD | config.value: old -> new | reason`
 2026-11-22 | Mop sweep/stroke defaults | owner approved as-is ("perfect") | baseline for future mop upgrades
 2026-11-22 | RunConfig baseline | shift 240 s, warning at 30 s, clock paused while tuning panel is open | middle of the 3-5 min target; ends early when every mess is clean
 2026-11-22 | HintConfig baseline (too-tough popup) | show after 0.35 s of trying, 0.15 s contact grace, stays 1.2 s, fades 0.25 s | owner idea: tell players early that a mess is beyond their tools so they don't waste time; brushing past doesn't trigger it
+2026-11-22 | ScoringConfig baseline | 10 pts per mess + 10 per hardness; early bonus 1 pt/s (only when all you could clean is clean); grades A 90% / B 75% / C 55% / D 35%, S needs nothing left incl. too-tough; cash 0.5/pt x grade multiplier (S 1.5 ... F 0.4) | tough messes pay more; starter tools cap you at A so upgrades matter

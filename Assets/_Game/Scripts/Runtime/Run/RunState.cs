@@ -85,6 +85,23 @@ namespace DungeonJanitor.Run
             return TimeLeft <= 0f && End(RunEndReason.TimeUp);
         }
 
+        /// <summary>Hardness of every cleaned mess.</summary>
+        public float[] CleanedHardness() => Hardnesses(e => e.Cleaned);
+
+        /// <summary>Hardness of every mess your tools could handle that is still dirty.</summary>
+        public float[] MissedHardness() => Hardnesses(e => !e.Cleaned && CanClean(e.Family, e.Hardness));
+
+        float[] Hardnesses(System.Predicate<Entry> match)
+        {
+            var list = new List<float>();
+            foreach (Entry entry in messes)
+            {
+                if (match(entry))
+                    list.Add(entry.Hardness);
+            }
+            return list.ToArray();
+        }
+
         /// <summary>Families of the uncleaned messes that were too tough, one entry each.</summary>
         public MessFamily[] TooToughFamilies()
         {

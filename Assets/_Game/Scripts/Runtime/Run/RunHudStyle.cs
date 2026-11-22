@@ -15,7 +15,9 @@ namespace DungeonJanitor.Run
         public float clockHeight = 80f;
         public float counterHeight = 40f;
         public float bannerWidth = 900f;
-        public float bannerHeight = 260f;
+        public float bannerHeight = 440f;
+        [Tooltip("Share of the banner height used by the title; the rest is the body.")]
+        [Range(0.1f, 0.6f)] public float bannerTitleShare = 0.22f;
 
         [Header("Text")]
         public Font font;
@@ -29,8 +31,10 @@ namespace DungeonJanitor.Run
         public string tooToughFormat = "   (+{0} too tough for your tools)";
         public string timeUpTitle = "Time's up!";
         public string allCleanTitle = "Spotless!";
-        public string bannerBodyFormat = "Cleaned {0} of {1}\nTime left: {2}{4}\n\n<size={3}>F5 / Start to restart</size>";
+        public string bannerBodyFormat = "Cleaned {0} of {1}\nTime left: {2}{4}{5}\n\n<size={3}>F5 / Start to restart</size>";
         public string bannerTooToughFormat = "\nLeft behind (too tough): {0}";
+        [Tooltip("{0} grade, {1} points, {2} early bonus, {3} cash.")]
+        public string bannerScoreFormat = "\n\n<size=44>Grade {0}</size>\nPoints {1:0} + early bonus {2:0}    Pay ${3}";
         public int bannerHintFontSize = 22;
 
         [Header("Colours")]

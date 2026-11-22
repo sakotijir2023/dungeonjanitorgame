@@ -75,6 +75,7 @@ namespace DungeonJanitor.Run
                 Reason = state.EndReason, TimeLeft = state.TimeLeft, Duration = state.Duration,
                 Cleaned = state.Cleaned, Total = state.Total,
                 TooTough = state.TooTough, TooToughFamilies = state.TooToughFamilies(),
+                CleanedHardness = state.CleanedHardness(), MissedHardness = state.MissedHardness(),
             });
         }
     }

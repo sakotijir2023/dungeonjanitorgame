@@ -1,5 +1,6 @@
 using DungeonJanitor.Hud;
 using DungeonJanitor.Run;
+using DungeonJanitor.Scoring;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace DungeonJanitor.Editor
         const string StylePath = "Assets/_Game/UI/RunHudStyle.asset";
         const string HintConfigPath = "Assets/_Game/Config/HintConfig.asset";
         const string ToughStylePath = "Assets/_Game/UI/ToughPopupStyle.asset";
+        const string ScoringConfigPath = "Assets/_Game/Config/ScoringConfig.asset";
 
         static RunSceneSetup()
         {
@@ -28,11 +30,15 @@ namespace DungeonJanitor.Editor
             var style = EditorAssets.LoadOrCreate<RunHudStyle>(StylePath);
             var hintConfig = EditorAssets.LoadOrCreate<HintConfig>(HintConfigPath);
             var toughStyle = EditorAssets.LoadOrCreate<ToughPopupStyle>(ToughStylePath);
+            var scoringConfig = EditorAssets.LoadOrCreate<ScoringConfig>(ScoringConfigPath);
             ConfigRegistryAutoFill.Refresh();
 
             var runGo = new GameObject("Run");
             var controller = runGo.AddComponent<RunController>();
             TestRoomBuilder.SetRef(controller, "config", config);
+
+            var scoreKeeper = runGo.AddComponent<ScoreKeeper>();
+            TestRoomBuilder.SetRef(scoreKeeper, "config", scoringConfig);
 
             var hud = runGo.AddComponent<RunHud>();
             TestRoomBuilder.SetRef(hud, "config", config);

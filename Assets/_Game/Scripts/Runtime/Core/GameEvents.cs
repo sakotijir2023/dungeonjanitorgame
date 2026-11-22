@@ -104,6 +104,10 @@ namespace DungeonJanitor.Core
         public int TooTough;
         /// <summary>Families of those messes (one entry per family), for the Inspector's hints.</summary>
         public MessFamily[] TooToughFamilies;
+        /// <summary>Hardness of each mess cleaned (for scoring).</summary>
+        public float[] CleanedHardness;
+        /// <summary>Hardness of each mess you could have cleaned but didn't.</summary>
+        public float[] MissedHardness;
     }
 
     /// <summary>Pressed the restart key (F5 / Start).</summary>

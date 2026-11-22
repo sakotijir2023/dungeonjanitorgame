@@ -1,4 +1,5 @@
 using DungeonJanitor.Core;
+using DungeonJanitor.Scoring;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,12 +39,14 @@ namespace DungeonJanitor.Run
         {
             EventBus<RunStatusChanged>.Subscribe(OnStatus);
             EventBus<RunEnded>.Subscribe(OnEnded);
+            EventBus<RunScored>.Subscribe(OnScored);
         }
 
         void OnDisable()
         {
             EventBus<RunStatusChanged>.Unsubscribe(OnStatus);
             EventBus<RunEnded>.Unsubscribe(OnEnded);
+            EventBus<RunScored>.Unsubscribe(OnScored);
         }
 
         void OnStatus(RunStatusChanged evt)
@@ -69,12 +72,23 @@ namespace DungeonJanitor.Run
             bool allClean = evt.Reason == RunEndReason.AllClean;
             bannerTitle.text = allClean ? style.allCleanTitle : style.timeUpTitle;
             bannerTitle.color = allClean ? style.allCleanColor : style.warningColor;
-            string tough = evt.TooTough > 0 ? string.Format(style.bannerTooToughFormat, evt.TooTough) : string.Empty;
-            bannerBody.text = string.Format(style.bannerBodyFormat, evt.Cleaned, evt.Total,
-                FormatTime(Mathf.CeilToInt(evt.TimeLeft)), style.bannerHintFontSize, tough);
+            SetBannerBody(evt, string.Empty);
             clock.text = FormatTime(Mathf.CeilToInt(evt.TimeLeft));
             counter.text = CounterText(evt.Cleaned, evt.Total, evt.TooTough);
             banner.SetActive(true);
+        }
+
+        void OnScored(RunScored evt)
+        {
+            ScoreResult score = evt.Score;
+            SetBannerBody(evt.Run, string.Format(style.bannerScoreFormat, score.Grade, score.Points, score.EarlyBonus, score.Cash));
+        }
+
+        void SetBannerBody(RunEnded evt, string scoreLine)
+        {
+            string tough = evt.TooTough > 0 ? string.Format(style.bannerTooToughFormat, evt.TooTough) : string.Empty;
+            bannerBody.text = string.Format(style.bannerBodyFormat, evt.Cleaned, evt.Total,
+                FormatTime(Mathf.CeilToInt(evt.TimeLeft)), style.bannerHintFontSize, tough, scoreLine);
         }
 
         string CounterText(int cleaned, int total, int tooTough)
@@ -111,9 +125,10 @@ namespace DungeonJanitor.Run
             image.color = style.bannerColor;
             image.raycastTarget = false;
 
-            bannerTitle = CreateText(bannerRect, "Title", style.bannerTitleFontSize, style.bannerHeight * 0.4f, Vector2.zero);
-            bannerBody = CreateText(bannerRect, "Body", style.bannerBodyFontSize, style.bannerHeight * 0.6f,
-                new Vector2(0f, -style.bannerHeight * 0.4f));
+            float titleHeight = style.bannerHeight * style.bannerTitleShare;
+            bannerTitle = CreateText(bannerRect, "Title", style.bannerTitleFontSize, titleHeight, Vector2.zero);
+            bannerBody = CreateText(bannerRect, "Body", style.bannerBodyFontSize, style.bannerHeight - titleHeight,
+                new Vector2(0f, -titleHeight));
             banner.SetActive(false);
         }
 
