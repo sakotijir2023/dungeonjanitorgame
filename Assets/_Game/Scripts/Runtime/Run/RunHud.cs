@@ -26,6 +26,7 @@ namespace DungeonJanitor.Run
         int shownSeconds = -1;
         int shownCleaned = -1;
         int shownTotal = -1;
+        int shownTough = -1;
 
         void Awake()
         {
@@ -54,11 +55,12 @@ namespace DungeonJanitor.Run
                 clock.text = FormatTime(seconds);
                 clock.color = evt.TimeLeft <= config.warningTime ? style.warningColor : style.textColor;
             }
-            if (evt.Cleaned != shownCleaned || evt.Total != shownTotal)
+            if (evt.Cleaned != shownCleaned || evt.Total != shownTotal || evt.TooTough != shownTough)
             {
                 shownCleaned = evt.Cleaned;
                 shownTotal = evt.Total;
-                counter.text = string.Format(style.counterFormat, evt.Total - evt.Cleaned, evt.Total);
+                shownTough = evt.TooTough;
+                counter.text = CounterText(evt.Cleaned, evt.Total, evt.TooTough);
             }
         }
 
@@ -67,11 +69,18 @@ namespace DungeonJanitor.Run
             bool allClean = evt.Reason == RunEndReason.AllClean;
             bannerTitle.text = allClean ? style.allCleanTitle : style.timeUpTitle;
             bannerTitle.color = allClean ? style.allCleanColor : style.warningColor;
+            string tough = evt.TooTough > 0 ? string.Format(style.bannerTooToughFormat, evt.TooTough) : string.Empty;
             bannerBody.text = string.Format(style.bannerBodyFormat, evt.Cleaned, evt.Total,
-                FormatTime(Mathf.CeilToInt(evt.TimeLeft)), style.bannerHintFontSize);
+                FormatTime(Mathf.CeilToInt(evt.TimeLeft)), style.bannerHintFontSize, tough);
             clock.text = FormatTime(Mathf.CeilToInt(evt.TimeLeft));
-            counter.text = string.Format(style.counterFormat, evt.Total - evt.Cleaned, evt.Total);
+            counter.text = CounterText(evt.Cleaned, evt.Total, evt.TooTough);
             banner.SetActive(true);
+        }
+
+        string CounterText(int cleaned, int total, int tooTough)
+        {
+            string text = string.Format(style.counterFormat, total - cleaned, total);
+            return tooTough > 0 ? text + string.Format(style.tooToughFormat, tooTough) : text;
         }
 
         string FormatTime(int totalSeconds) =>

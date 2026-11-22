@@ -43,6 +43,8 @@ namespace DungeonJanitor.Tools.Mop
         /// <summary>Raised at the peak of each stroke that lands on the floor, with the head position.</summary>
         public event Action<Vector3> StrokeLanded;
 
+        public override float MaxHardness => config.maxHardness;
+
         void Awake() => motion = new MopMotion(config);
 
         public override void OnEquipped()

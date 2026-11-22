@@ -25,9 +25,12 @@ namespace DungeonJanitor.Run
         public int bannerBodyFontSize = 30;
         public string clockFormat = "{0}:{1:00}";
         public string counterFormat = "Messes left: {0} / {1}";
+        [Tooltip("Added after the counter when some messes are beyond your tools. {0} = how many.")]
+        public string tooToughFormat = "   (+{0} too tough for your tools)";
         public string timeUpTitle = "Time's up!";
         public string allCleanTitle = "Spotless!";
-        public string bannerBodyFormat = "Cleaned {0} of {1}\nTime left: {2}\n\n<size={3}>F5 / Start to restart</size>";
+        public string bannerBodyFormat = "Cleaned {0} of {1}\nTime left: {2}{4}\n\n<size={3}>F5 / Start to restart</size>";
+        public string bannerTooToughFormat = "\nLeft behind (too tough): {0}";
         public int bannerHintFontSize = 22;
 
         [Header("Colours")]

@@ -59,7 +59,31 @@ namespace DungeonJanitor.Tools
             for (int i = 0; i < tools.Count; i++)
                 ids[i] = IdOf(tools[i]);
             EventBus<ToolsAvailable>.Raise(new ToolsAvailable { ToolIds = ids });
+            RaiseCapabilities();
             Equip(startingToolIndex);
+        }
+
+        /// <summary>Tells the run what the owned tools can clean. Call again after upgrades.</summary>
+        public void RaiseCapabilities()
+        {
+            var best = new Dictionary<Messes.MessFamily, float>();
+            foreach (ToolBase tool in tools)
+            {
+                if (tool.Definition == null || tool.Definition.handles == null)
+                    continue;
+                foreach (Messes.MessFamily family in tool.Definition.handles)
+                    best[family] = best.TryGetValue(family, out float current) ? Mathf.Max(current, tool.MaxHardness) : tool.MaxHardness;
+            }
+            var families = new Messes.MessFamily[best.Count];
+            var hardness = new float[best.Count];
+            int i = 0;
+            foreach (KeyValuePair<Messes.MessFamily, float> pair in best)
+            {
+                families[i] = pair.Key;
+                hardness[i] = pair.Value;
+                i++;
+            }
+            EventBus<CleaningCapabilities>.Raise(new CleaningCapabilities { Families = families, MaxHardness = hardness });
         }
 
         public void Equip(int index)

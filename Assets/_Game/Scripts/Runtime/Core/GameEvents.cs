@@ -55,6 +55,16 @@ namespace DungeonJanitor.Core
         public string[] ToolIds;
     }
 
+    /// <summary>
+    /// What the player's tools can clean: for each mess family, the hardest
+    /// mess any owned tool handles. Families not listed can't be cleaned at all.
+    /// </summary>
+    public struct CleaningCapabilities
+    {
+        public MessFamily[] Families;
+        public float[] MaxHardness;
+    }
+
     /// <summary>Why a run ended.</summary>
     public enum RunEndReason
     {
@@ -67,8 +77,12 @@ namespace DungeonJanitor.Core
     {
         public float TimeLeft;
         public float Duration;
+        /// <summary>Cleaned messes your tools can handle.</summary>
         public int Cleaned;
+        /// <summary>All messes your tools can handle.</summary>
         public int Total;
+        /// <summary>Messes still too tough for your current tools.</summary>
+        public int TooTough;
     }
 
     /// <summary>The run is over. TimeLeft above zero means an early finish.</summary>
@@ -79,6 +93,10 @@ namespace DungeonJanitor.Core
         public float Duration;
         public int Cleaned;
         public int Total;
+        /// <summary>Messes left behind because your tools couldn't handle them.</summary>
+        public int TooTough;
+        /// <summary>Families of those messes (one entry per family), for the Inspector's hints.</summary>
+        public MessFamily[] TooToughFamilies;
     }
 
     /// <summary>Pressed the restart key (F5 / Start).</summary>

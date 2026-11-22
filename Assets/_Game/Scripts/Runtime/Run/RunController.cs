@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 namespace DungeonJanitor.Run
 {
     /// <summary>
-    /// Runs one shift: counts messes as they spawn and get cleaned, counts the
+    /// Runs one shift: counts messes as they spawn and get cleaned (only those
+    /// the player's tools can handle count toward "all clean"), counts the
     /// clock down (game time, so slow-motion slows it too), and announces the
     /// end. Restart reloads the scene.
     /// </summary>
@@ -22,6 +23,7 @@ namespace DungeonJanitor.Run
         {
             EventBus<MessSpawned>.Subscribe(OnMessSpawned);
             EventBus<MessCleaned>.Subscribe(OnMessCleaned);
+            EventBus<CleaningCapabilities>.Subscribe(OnCapabilities);
             EventBus<TuningPanelVisibilityChanged>.Subscribe(OnTuningPanel);
             EventBus<RestartRunRequested>.Subscribe(OnRestart);
         }
@@ -30,17 +32,20 @@ namespace DungeonJanitor.Run
         {
             EventBus<MessSpawned>.Unsubscribe(OnMessSpawned);
             EventBus<MessCleaned>.Unsubscribe(OnMessCleaned);
+            EventBus<CleaningCapabilities>.Unsubscribe(OnCapabilities);
             EventBus<TuningPanelVisibilityChanged>.Unsubscribe(OnTuningPanel);
             EventBus<RestartRunRequested>.Unsubscribe(OnRestart);
         }
 
-        void OnMessSpawned(MessSpawned _) => state.AddMess();
+        void OnMessSpawned(MessSpawned evt) => state.AddMess(evt.Family, evt.Hardness);
 
-        void OnMessCleaned(MessCleaned _)
+        void OnMessCleaned(MessCleaned evt)
         {
-            if (state.CleanMess())
+            if (state.CleanMess(evt.Family, evt.Hardness))
                 AnnounceEnd();
         }
+
+        void OnCapabilities(CleaningCapabilities evt) => state.SetCapabilities(evt.Families, evt.MaxHardness);
 
         void OnTuningPanel(TuningPanelVisibilityChanged evt) => tuningOpen = evt.Visible;
 
@@ -59,6 +64,7 @@ namespace DungeonJanitor.Run
             EventBus<RunStatusChanged>.Raise(new RunStatusChanged
             {
                 TimeLeft = state.TimeLeft, Duration = state.Duration, Cleaned = state.Cleaned, Total = state.Total,
+                TooTough = state.TooTough,
             });
         }
 
@@ -68,6 +74,7 @@ namespace DungeonJanitor.Run
             {
                 Reason = state.EndReason, TimeLeft = state.TimeLeft, Duration = state.Duration,
                 Cleaned = state.Cleaned, Total = state.Total,
+                TooTough = state.TooTough, TooToughFamilies = state.TooToughFamilies(),
             });
         }
     }

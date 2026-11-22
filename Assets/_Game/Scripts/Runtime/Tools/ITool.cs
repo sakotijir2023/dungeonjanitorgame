@@ -6,6 +6,8 @@ namespace DungeonJanitor.Tools
     public interface ITool
     {
         ToolDefinition Definition { get; }
+        /// <summary>Hardest mess this tool can clean right now (upgrades raise it).</summary>
+        float MaxHardness { get; }
         void OnEquipped();
         void OnUnequipped();
         void SetPrimaryHeld(bool held);
@@ -18,6 +20,7 @@ namespace DungeonJanitor.Tools
         [SerializeField] ToolDefinition definition;
 
         public ToolDefinition Definition => definition;
+        public virtual float MaxHardness => 0f;
         protected bool PrimaryHeld { get; private set; }
         protected bool SecondaryHeld { get; private set; }
 

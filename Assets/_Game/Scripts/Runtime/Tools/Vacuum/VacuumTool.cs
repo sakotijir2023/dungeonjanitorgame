@@ -27,6 +27,8 @@ namespace DungeonJanitor.Tools.Vacuum
         /// <summary>Raised each time a mess goes down the nozzle.</summary>
         public event Action<Mess> Swallowed;
 
+        public override float MaxHardness => config.maxHardness;
+
         public override void OnUnequipped()
         {
             Power = 0f;

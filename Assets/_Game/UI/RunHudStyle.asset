@@ -26,15 +26,19 @@ MonoBehaviour:
   bannerBodyFontSize: 30
   clockFormat: '{0}:{1:00}'
   counterFormat: 'Messes left: {0} / {1}'
+  tooToughFormat: '   (+{0} too tough for your tools)'
   timeUpTitle: Time's up!
   allCleanTitle: Spotless!
   bannerBodyFormat: 'Cleaned {0} of {1}
 
-    Time left: {2}
+    Time left: {2}{4}
 
 
-    <size={3}>F5 /
-    Start to restart</size>'
+    <size={3}>F5
+    / Start to restart</size>'
+  bannerTooToughFormat: '
+
+    Left behind (too tough): {0}'
   bannerHintFontSize: 22
   textColor: {r: 0.95, g: 0.93, b: 0.88, a: 1}
   warningColor: {r: 1, g: 0.45, b: 0.3, a: 1}
