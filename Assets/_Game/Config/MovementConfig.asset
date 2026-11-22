@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6259a302af9722b4ba34f80e3cf32a26, type: 3}
+  m_Name: MovementConfig
+  m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Player.MovementConfig
+  walkSpeed: 4.5
+  sprintSpeed: 7.5
+  groundAcceleration: 60
+  groundDeceleration: 50
+  airAcceleration: 15
+  gravity: 25
+  fallGravityMultiplier: 1.5
+  jumpHeight: 1.2
+  terminalVelocity: 40
+  coyoteTime: 0.1
+  jumpBufferTime: 0.1
+  groundStickSpeed: 2
+  landedEventMinFallSpeed: 3
+  mouseSensitivity: 0.12
+  stickSensitivity: 200
+  stickResponseExponent: 2
+  invertY: 0
+  lookSmoothingTime: 0.02
+  maxLookDown: 85
+  maxLookUp: 85
+  eyeHeight: 1.6
+  bodyHeight: 1.8
+  bodyRadius: 0.35
+  stepOffset: 0.35
+  slopeLimit: 45
+  fieldOfView: 75
