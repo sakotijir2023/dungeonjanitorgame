@@ -7,7 +7,8 @@ namespace DungeonJanitor.Tools
 {
     /// <summary>
     /// Holds the player's tools, keeps one equipped, and feeds it the Use and
-    /// Secondary buttons. The tool wheel will drive Equip later.
+    /// Secondary buttons. Equips on number keys, D-pad, or a ToolSelectRequested
+    /// event from the tool wheel.
     /// </summary>
     public sealed class ToolUser : MonoBehaviour
     {
@@ -23,13 +24,24 @@ namespace DungeonJanitor.Tools
         {
             input.ToolSlotPressed += Equip;
             input.ToolCyclePressed += Cycle;
+            EventBus<ToolSelectRequested>.Subscribe(OnSelectRequested);
         }
 
         void OnDisable()
         {
             input.ToolSlotPressed -= Equip;
             input.ToolCyclePressed -= Cycle;
+            EventBus<ToolSelectRequested>.Unsubscribe(OnSelectRequested);
         }
+
+        void OnSelectRequested(ToolSelectRequested evt)
+        {
+            int index = tools.FindIndex(t => IdOf(t) == evt.ToolId);
+            if (index >= 0)
+                Equip(index);
+        }
+
+        static string IdOf(ToolBase tool) => tool.Definition != null ? tool.Definition.id : tool.name;
 
         void Cycle(int direction)
         {
@@ -43,6 +55,10 @@ namespace DungeonJanitor.Tools
         {
             foreach (ToolBase tool in tools)
                 tool.OnUnequipped();
+            var ids = new string[tools.Count];
+            for (int i = 0; i < tools.Count; i++)
+                ids[i] = IdOf(tools[i]);
+            EventBus<ToolsAvailable>.Raise(new ToolsAvailable { ToolIds = ids });
             Equip(startingToolIndex);
         }
 
@@ -54,8 +70,7 @@ namespace DungeonJanitor.Tools
                 equipped.OnUnequipped();
             equipped = tools[index];
             equipped.OnEquipped();
-            string id = equipped.Definition != null ? equipped.Definition.id : equipped.name;
-            EventBus<ToolEquipped>.Raise(new ToolEquipped { ToolId = id });
+            EventBus<ToolEquipped>.Raise(new ToolEquipped { ToolId = IdOf(equipped) });
         }
 
         void Update()

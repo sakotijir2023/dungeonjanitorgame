@@ -31,7 +31,7 @@ namespace DungeonJanitor.Messes
             if (mode == MessLayoutMode.Fixed)
             {
                 foreach (MessSpawnPoint point in points)
-                    Spawn(point, point.FixedFamily, point.FixedHardness);
+                    Spawn(point, point.FixedFamily, point.FixedHardness, point.FixedVariant);
                 return;
             }
 
@@ -43,11 +43,11 @@ namespace DungeonJanitor.Messes
                 if (!catalog.TryGet(family, out MessCatalog.Entry entry))
                     continue;
                 float hardness = Mathf.Lerp(entry.minHardness, entry.maxHardness, planned.HardnessRoll);
-                Spawn(point, family, hardness);
+                Spawn(point, family, hardness, planned.VariantIndex(entry.variantCount));
             }
         }
 
-        void Spawn(MessSpawnPoint point, MessFamily family, float hardness)
+        void Spawn(MessSpawnPoint point, MessFamily family, float hardness, int variant)
         {
             if (!catalog.TryGet(family, out MessCatalog.Entry entry))
             {
@@ -57,7 +57,7 @@ namespace DungeonJanitor.Messes
             Mess mess = Instantiate(entry.prefab, point.transform.position, point.transform.rotation, transform);
             // Spawn points can be scaled to make bigger or smaller messes.
             mess.transform.localScale = Vector3.Scale(entry.prefab.transform.localScale, point.transform.lossyScale);
-            mess.Configure(hardness);
+            mess.Configure(hardness, variant);
             spawned.Add(mess);
         }
     }

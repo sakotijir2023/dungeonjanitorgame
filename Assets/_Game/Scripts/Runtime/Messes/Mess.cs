@@ -11,17 +11,21 @@ namespace DungeonJanitor.Messes
     {
         [SerializeField] MessFamily family;
         [SerializeField, Min(0f)] float hardness;
+        [SerializeField, Min(0)] int variant;
 
         bool cleaned;
 
         public MessFamily Family => family;
         public float Hardness => hardness;
+        /// <summary>Which look of its family this mess uses (e.g. grime, blood, scorch).</summary>
+        public int Variant => variant;
         public bool IsCleaned => cleaned;
 
         /// <summary>Set by the spawner right after Instantiate, before Start.</summary>
-        public void Configure(float newHardness)
+        public void Configure(float newHardness, int newVariant = 0)
         {
             hardness = Mathf.Max(0f, newHardness);
+            variant = Mathf.Max(0, newVariant);
         }
 
         void Start()

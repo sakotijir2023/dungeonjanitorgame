@@ -1,3 +1,4 @@
+using DungeonJanitor.Core;
 using DungeonJanitor.Input;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ namespace DungeonJanitor.Player
     /// <summary>
     /// Mouse and stick look. Yaw turns the body, pitch tilts the camera pivot.
     /// Uses unscaled time so look stays responsive during slow-motion.
+    /// Look input is ignored while the tool wheel is open (it steers the wheel).
     /// </summary>
     public sealed class FirstPersonLook : MonoBehaviour
     {
@@ -18,6 +20,11 @@ namespace DungeonJanitor.Player
         float targetPitch;
         float yaw;
         float pitch;
+        bool wheelOpen;
+
+        void OnEnable() => EventBus<ToolWheelVisibilityChanged>.Subscribe(OnWheel);
+        void OnDisable() => EventBus<ToolWheelVisibilityChanged>.Unsubscribe(OnWheel);
+        void OnWheel(ToolWheelVisibilityChanged evt) => wheelOpen = evt.Visible;
 
         void Start()
         {
@@ -28,7 +35,7 @@ namespace DungeonJanitor.Player
         void Update()
         {
             float dt = Time.unscaledDeltaTime;
-            Vector2 degrees = ReadLookDegrees(dt);
+            Vector2 degrees = wheelOpen ? Vector2.zero : ReadLookDegrees(dt);
             float verticalSign = config.invertY ? -1f : 1f;
 
             targetYaw += degrees.x;

@@ -13,6 +13,7 @@ namespace DungeonJanitor.Messes
     {
         const string BaseMapProperty = "_BaseMap";
         const string BaseColorProperty = "_BaseColor";
+        const string SmoothnessProperty = "_Smoothness";
         // Shade variation: thin dirt is a bit lighter than thick dirt.
         const float ThinShade = 0.8f;
         const float ThickShade = 1.1f;
@@ -22,6 +23,7 @@ namespace DungeonJanitor.Messes
 
         static readonly int BaseMapId = Shader.PropertyToID(BaseMapProperty);
         static readonly int BaseColorId = Shader.PropertyToID(BaseColorProperty);
+        static readonly int SmoothnessId = Shader.PropertyToID(SmoothnessProperty);
 
         [SerializeField] StainConfig config;
         [SerializeField] Renderer decal;
@@ -45,11 +47,12 @@ namespace DungeonJanitor.Messes
         {
             int seed = Mathf.RoundToInt(transform.position.x * SeedFromX + transform.position.z * SeedFromZ);
             int resolution = config.resolution;
+            StainLook look = config.LookFor(mess.Variant);
             float[] coverage = StainShape.Generate(resolution, seed, config.baseRadius, config.edgeWobble,
-                config.edgeSoftness, config.speckle);
+                config.edgeSoftness * look.edgeSoftnessScale, Mathf.Clamp01(config.speckle * look.speckleScale));
             mask = new StainMask(resolution, coverage);
 
-            tint = Color.Lerp(config.softColor, config.hardColor, Mathf.Clamp01(mess.Hardness / config.hardnessForDarkest));
+            tint = Color.Lerp(look.softColor, look.hardColor, Mathf.Clamp01(mess.Hardness / config.hardnessForDarkest));
             texture = new Texture2D(resolution, resolution, TextureFormat.RGBA32, false)
             {
                 wrapMode = TextureWrapMode.Clamp,
@@ -60,6 +63,7 @@ namespace DungeonJanitor.Messes
             var block = new MaterialPropertyBlock();
             block.SetTexture(BaseMapId, texture);
             block.SetColor(BaseColorId, Color.white);
+            block.SetFloat(SmoothnessId, look.smoothness);
             decal.SetPropertyBlock(block);
 
             textureDirty = true;

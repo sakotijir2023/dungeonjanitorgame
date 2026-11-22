@@ -12,16 +12,19 @@ namespace DungeonJanitor.Messes
 
         [SerializeField] MessFamily fixedFamily = MessFamily.Goo;
         [SerializeField, Min(0f)] float fixedHardness;
+        [SerializeField, Min(0)] int fixedVariant;
         [SerializeField] MessFamily[] allowedFamilies = { MessFamily.Goo };
 
         public MessFamily FixedFamily => fixedFamily;
         public float FixedHardness => fixedHardness;
+        public int FixedVariant => fixedVariant;
         public MessFamily[] AllowedFamilies => allowedFamilies;
 
-        public void Setup(MessFamily family, float hardness, MessFamily[] allowed)
+        public void Setup(MessFamily family, float hardness, MessFamily[] allowed, int variant = 0)
         {
             fixedFamily = family;
             fixedHardness = hardness;
+            fixedVariant = variant;
             allowedFamilies = allowed;
         }
 

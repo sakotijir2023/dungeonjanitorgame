@@ -70,6 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Messes.Mess
   family: 1
   hardness: 0
+  variant: 0
 --- !u!114 &712093483938936479
 MonoBehaviour:
   m_ObjectHideFlags: 0

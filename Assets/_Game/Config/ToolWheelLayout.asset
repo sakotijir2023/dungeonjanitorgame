@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a4b886f26041634b8720053c099802a, type: 3}
+  m_Name: ToolWheelLayout
+  m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Tools.Wheel.ToolWheelLayout
+  slots:
+  - tool: {fileID: 11400000, guid: 660e5a67f961c35428e79430f57c82c5, type: 2}
+    folderName: 
+    folderOptions: []
+  - tool: {fileID: 11400000, guid: 012c8e3de2dc55545a0fd6d80d08e0cb, type: 2}
+    folderName: 
+    folderOptions: []
+  - tool: {fileID: 11400000, guid: 7d2ef7e937f4f454eaade4700e880371, type: 2}
+    folderName: 
+    folderOptions: []
+  - tool: {fileID: 11400000, guid: 23d3d0498b0f9c640acc7dc80bd0d0d6, type: 2}
+    folderName: 
+    folderOptions: []
+  - tool: {fileID: 11400000, guid: 54b548594a42aa6429c2a42de57fb649, type: 2}
+    folderName: 
+    folderOptions: []
+  - tool: {fileID: 11400000, guid: 9acfe30f1797c214da07712aecef5099, type: 2}
+    folderName: 
+    folderOptions: []
+  - tool: {fileID: 11400000, guid: 969dd40a49f95e541a68dea84e66efb8, type: 2}
+    folderName: 
+    folderOptions: []
+  - tool: {fileID: 0}
+    folderName: Setup
+    folderOptions:
+    - {fileID: 11400000, guid: 10820d5e2554fae44ba5b6c29e1ed92e, type: 2}
+    - {fileID: 11400000, guid: 9201e3b446835fe449473e57921fe4b5, type: 2}
+    - {fileID: 11400000, guid: ab143f3e79aad8d4db8f4b26384cd338, type: 2}
+    - {fileID: 11400000, guid: 00ef35bc1d7faa343a205991f82e945b, type: 2}

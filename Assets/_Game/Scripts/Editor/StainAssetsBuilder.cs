@@ -18,6 +18,7 @@ namespace DungeonJanitor.Editor
         const float StainSmoothness = 0.3f;
         const float SeededMinHardness = 0f;
         const float SeededMaxHardness = 2.5f;
+        const int LookCount = 3;
 
         // URP transparent alpha-blend setup values.
         const float SurfaceTransparent = 1f;
@@ -30,7 +31,7 @@ namespace DungeonJanitor.Editor
             return new MessCatalog.Entry
             {
                 family = MessFamily.Stain, prefab = BuildPrefab(config),
-                minHardness = SeededMinHardness, maxHardness = SeededMaxHardness,
+                minHardness = SeededMinHardness, maxHardness = SeededMaxHardness, variantCount = LookCount,
             };
         }
 

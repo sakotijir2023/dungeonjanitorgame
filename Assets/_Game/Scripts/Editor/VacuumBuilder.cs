@@ -10,7 +10,7 @@ namespace DungeonJanitor.Editor
     public static class VacuumBuilder
     {
         const string ConfigPath = "Assets/_Game/Config/VacuumConfig.asset";
-        const string DefinitionPath = "Assets/_Game/Config/Tools/Vacuum.asset";
+        public const string DefinitionPath = "Assets/_Game/Config/Tools/Vacuum.asset";
         const string MaterialFolder = "Assets/_Game/Art/Materials";
         const string ToolId = "vacuum";
         const string ToolName = "Vacuum";

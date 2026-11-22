@@ -9,7 +9,7 @@ namespace DungeonJanitor.Editor
     public static class MopBuilder
     {
         const string ConfigPath = "Assets/_Game/Config/MopConfig.asset";
-        const string DefinitionPath = "Assets/_Game/Config/Tools/Mop.asset";
+        public const string DefinitionPath = "Assets/_Game/Config/Tools/Mop.asset";
         const string MaterialFolder = "Assets/_Game/Art/Materials";
         const string ToolId = "mop";
         const string ToolName = "Mop";

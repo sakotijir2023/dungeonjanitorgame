@@ -2,19 +2,25 @@ using System.Collections.Generic;
 
 namespace DungeonJanitor.Messes
 {
-    /// <summary>One planned spawn: which point, which of its allowed families, and a 0..1 roll for hardness.</summary>
+    /// <summary>One planned spawn: which point, which of its allowed families, and 0..1 rolls for hardness and look.</summary>
     public readonly struct PlannedSpawn
     {
         public readonly int PointIndex;
         public readonly int ChoiceIndex;
         public readonly float HardnessRoll;
+        public readonly float VariantRoll;
 
-        public PlannedSpawn(int pointIndex, int choiceIndex, float hardnessRoll)
+        public PlannedSpawn(int pointIndex, int choiceIndex, float hardnessRoll, float variantRoll)
         {
             PointIndex = pointIndex;
             ChoiceIndex = choiceIndex;
             HardnessRoll = hardnessRoll;
+            VariantRoll = variantRoll;
         }
+
+        /// <summary>Turns the look roll into one of <paramref name="variantCount"/> looks.</summary>
+        public int VariantIndex(int variantCount) =>
+            variantCount <= 1 ? 0 : System.Math.Min(variantCount - 1, (int)(VariantRoll * variantCount));
     }
 
     /// <summary>
@@ -36,6 +42,7 @@ namespace DungeonJanitor.Messes
                 double fillRoll = random.NextDouble();
                 double choiceRoll = random.NextDouble();
                 double hardnessRoll = random.NextDouble();
+                double variantRoll = random.NextDouble();
 
                 int choices = choicesPerPoint[i];
                 if (choices <= 0 || fillRoll >= fillChance)
@@ -44,7 +51,7 @@ namespace DungeonJanitor.Messes
                 int choice = (int)(choiceRoll * choices);
                 if (choice >= choices)
                     choice = choices - 1;
-                plan.Add(new PlannedSpawn(i, choice, (float)hardnessRoll));
+                plan.Add(new PlannedSpawn(i, choice, (float)hardnessRoll, (float)variantRoll));
             }
             return plan;
         }

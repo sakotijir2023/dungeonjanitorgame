@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Tuning.TuningPanelStyle
   referenceResolution: {x: 1920, y: 1080}
   sortingOrder: 1000
-  panelWidth: 780
+  panelWidth: 1040
   panelMargin: 24
-  padding: 14
-  spacing: 4
-  rowHeight: 32
-  headerHeight: 40
-  labelWidth: 300
-  valueWidth: 90
-  buttonWidth: 150
-  smallButtonWidth: 44
+  padding: 18
+  spacing: 6
+  rowHeight: 44
+  headerHeight: 54
+  labelWidth: 420
+  valueWidth: 120
+  buttonWidth: 200
+  smallButtonWidth: 60
   scrollSensitivity: 30
   font: {fileID: 0}
-  fontSize: 18
-  headerFontSize: 22
-  titleFontSize: 26
+  fontSize: 26
+  headerFontSize: 30
+  titleFontSize: 34
   valueFormat: 0.###
   title: Tuning  (F1 / View button)
   presetNamePlaceholder: Preset name...

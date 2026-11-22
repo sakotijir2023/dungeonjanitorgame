@@ -15,6 +15,8 @@ namespace DungeonJanitor.Messes
             public Mess prefab;
             [Min(0f)] public float minHardness;
             [Min(0f)] public float maxHardness = 1f;
+            [Tooltip("How many looks this family has (stains: grime, blood, scorch). Seeded runs pick one.")]
+            [Min(1)] public int variantCount = 1;
         }
 
         [SerializeField] List<Entry> entries = new List<Entry>();

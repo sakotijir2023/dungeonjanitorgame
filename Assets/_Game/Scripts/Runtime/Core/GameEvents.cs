@@ -37,6 +37,24 @@ namespace DungeonJanitor.Core
         public bool Active;
     }
 
+    /// <summary>The tool wheel opened or closed (drives slow-motion and freezes look).</summary>
+    public struct ToolWheelVisibilityChanged
+    {
+        public bool Visible;
+    }
+
+    /// <summary>Something (the wheel) asks for a tool by its definition id.</summary>
+    public struct ToolSelectRequested
+    {
+        public string ToolId;
+    }
+
+    /// <summary>The tools the player actually owns right now, by definition id.</summary>
+    public struct ToolsAvailable
+    {
+        public string[] ToolIds;
+    }
+
     /// <summary>Pressed the tuning panel toggle (F1 / gamepad View button).</summary>
     public struct TuningPanelToggleRequested { }
 

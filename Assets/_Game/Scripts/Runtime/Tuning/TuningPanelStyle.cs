@@ -14,23 +14,23 @@ namespace DungeonJanitor.Tuning
         public int sortingOrder = 1000;
 
         [Header("Layout")]
-        public float panelWidth = 780f;
+        public float panelWidth = 1040f;
         public float panelMargin = 24f;
-        public int padding = 14;
-        public float spacing = 4f;
-        public float rowHeight = 32f;
-        public float headerHeight = 40f;
-        public float labelWidth = 300f;
-        public float valueWidth = 90f;
-        public float buttonWidth = 150f;
-        public float smallButtonWidth = 44f;
+        public int padding = 18;
+        public float spacing = 6f;
+        public float rowHeight = 44f;
+        public float headerHeight = 54f;
+        public float labelWidth = 420f;
+        public float valueWidth = 120f;
+        public float buttonWidth = 200f;
+        public float smallButtonWidth = 60f;
         public float scrollSensitivity = 30f;
 
         [Header("Text")]
         public Font font;
-        public int fontSize = 18;
-        public int headerFontSize = 22;
-        public int titleFontSize = 26;
+        public int fontSize = 26;
+        public int headerFontSize = 30;
+        public int titleFontSize = 34;
         public string valueFormat = "0.###";
         public string title = "Tuning  (F1 / View button)";
         public string presetNamePlaceholder = "Preset name...";
