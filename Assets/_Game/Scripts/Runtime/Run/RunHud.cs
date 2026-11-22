@@ -1,14 +1,12 @@
 using DungeonJanitor.Core;
-using DungeonJanitor.Scoring;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace DungeonJanitor.Run
 {
     /// <summary>
-    /// Shift clock and mess counter at the top of the screen, and a simple
-    /// banner when the shift ends (stand-in until the Inspector's end screen).
-    /// Listens to run events only.
+    /// Shift clock and mess counter at the top of the screen. Freezes on the
+    /// final values when the shift ends. Listens to run events only.
     /// </summary>
     public sealed class RunHud : MonoBehaviour
     {
@@ -21,9 +19,6 @@ namespace DungeonJanitor.Run
         Font font;
         Text clock;
         Text counter;
-        GameObject banner;
-        Text bannerTitle;
-        Text bannerBody;
         int shownSeconds = -1;
         int shownCleaned = -1;
         int shownTotal = -1;
@@ -39,14 +34,12 @@ namespace DungeonJanitor.Run
         {
             EventBus<RunStatusChanged>.Subscribe(OnStatus);
             EventBus<RunEnded>.Subscribe(OnEnded);
-            EventBus<RunScored>.Subscribe(OnScored);
         }
 
         void OnDisable()
         {
             EventBus<RunStatusChanged>.Unsubscribe(OnStatus);
             EventBus<RunEnded>.Unsubscribe(OnEnded);
-            EventBus<RunScored>.Unsubscribe(OnScored);
         }
 
         void OnStatus(RunStatusChanged evt)
@@ -69,26 +62,8 @@ namespace DungeonJanitor.Run
 
         void OnEnded(RunEnded evt)
         {
-            bool allClean = evt.Reason == RunEndReason.AllClean;
-            bannerTitle.text = allClean ? style.allCleanTitle : style.timeUpTitle;
-            bannerTitle.color = allClean ? style.allCleanColor : style.warningColor;
-            SetBannerBody(evt, string.Empty);
             clock.text = FormatTime(Mathf.CeilToInt(evt.TimeLeft));
             counter.text = CounterText(evt.Cleaned, evt.Total, evt.TooTough);
-            banner.SetActive(true);
-        }
-
-        void OnScored(RunScored evt)
-        {
-            ScoreResult score = evt.Score;
-            SetBannerBody(evt.Run, string.Format(style.bannerScoreFormat, score.Grade, score.Points, score.EarlyBonus, score.Cash));
-        }
-
-        void SetBannerBody(RunEnded evt, string scoreLine)
-        {
-            string tough = evt.TooTough > 0 ? string.Format(style.bannerTooToughFormat, evt.TooTough) : string.Empty;
-            bannerBody.text = string.Format(style.bannerBodyFormat, evt.Cleaned, evt.Total,
-                FormatTime(Mathf.CeilToInt(evt.TimeLeft)), style.bannerHintFontSize, tough, scoreLine);
         }
 
         string CounterText(int cleaned, int total, int tooTough)
@@ -116,23 +91,9 @@ namespace DungeonJanitor.Run
                 new Vector2(0f, -style.topMargin));
             counter = CreateText(canvasGo.transform, "Counter", style.counterFontSize, style.counterHeight,
                 new Vector2(0f, -style.topMargin - style.clockHeight));
-
-            banner = new GameObject("EndBanner", typeof(RectTransform), typeof(Image));
-            var bannerRect = (RectTransform)banner.transform;
-            bannerRect.SetParent(canvasGo.transform, false);
-            bannerRect.sizeDelta = new Vector2(style.bannerWidth, style.bannerHeight);
-            var image = banner.GetComponent<Image>();
-            image.color = style.bannerColor;
-            image.raycastTarget = false;
-
-            float titleHeight = style.bannerHeight * style.bannerTitleShare;
-            bannerTitle = CreateText(bannerRect, "Title", style.bannerTitleFontSize, titleHeight, Vector2.zero);
-            bannerBody = CreateText(bannerRect, "Body", style.bannerBodyFontSize, style.bannerHeight - titleHeight,
-                new Vector2(0f, -titleHeight));
-            banner.SetActive(false);
         }
 
-        /// <summary>Full-width text anchored to the top of its parent.</summary>
+        /// <summary>Full-width text anchored to the top of the screen.</summary>
         Text CreateText(Transform parent, string objectName, int size, float height, Vector2 position)
         {
             var go = new GameObject(objectName, typeof(RectTransform), typeof(Text), typeof(Shadow));

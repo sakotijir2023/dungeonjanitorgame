@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c531f2686ddb7f498f93ecfd34eb0bb, type: 3}
+  m_Name: ReportCardStyle
+  m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Inspection.ReportCardStyle
+  referenceResolution: {x: 1920, y: 1080}
+  sortingOrder: 200
+  cardSize: {x: 1040, y: 850}
+  padding: 36
+  spacing: 8
+  headerHeight: 40
+  titleHeight: 64
+  statsHeight: 110
+  gradeHeight: 150
+  payHeight: 44
+  remarkHeight: 130
+  signatureHeight: 34
+  hintHeight: 90
+  footerHeight: 34
+  font: {fileID: 0}
+  headerFontSize: 24
+  titleFontSize: 52
+  statsFontSize: 28
+  gradeFontSize: 140
+  payFontSize: 32
+  remarkFontSize: 32
+  signatureFontSize: 24
+  hintFontSize: 26
+  footerFontSize: 22
+  header: INSPECTION REPORT
+  allCleanTitle: Shift complete
+  timeUpTitle: Time's up
+  statsFormat: Cleaned {0} of {1}     Time left {2}{3}
+  tooToughFormat: '
+
+    Left behind (too tough for your tools): {0}'
+  payFormat: '{0:0} pts  +  {1:0} early bonus      Pay  ${2}'
+  remarkFormat: "\u201C{0}\u201D"
+  signature: "\u2014 the Inspector"
+  footer: F5 / Start to try again
+  backdropColor: {r: 0, g: 0, b: 0, a: 0.55}
+  cardColor: {r: 0.86, g: 0.82, b: 0.72, a: 0.97}
+  inkColor: {r: 0.16, g: 0.13, b: 0.11, a: 1}
+  mutedInkColor: {r: 0.36, g: 0.31, b: 0.27, a: 1}
+  hintColor: {r: 0.6, g: 0.18, b: 0.1, a: 1}
+  gradeS: {r: 0.78, g: 0.58, b: 0.08, a: 1}
+  gradeA: {r: 0.17, g: 0.5, b: 0.24, a: 1}
+  gradeB: {r: 0.16, g: 0.42, b: 0.5, a: 1}
+  gradeC: {r: 0.55, g: 0.45, b: 0.1, a: 1}
+  gradeD: {r: 0.72, g: 0.36, b: 0.08, a: 1}
+  gradeF: {r: 0.7, g: 0.1, b: 0.08, a: 1}

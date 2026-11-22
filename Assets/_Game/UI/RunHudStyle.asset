@@ -17,40 +17,13 @@ MonoBehaviour:
   topMargin: 24
   clockHeight: 80
   counterHeight: 40
-  bannerWidth: 900
-  bannerHeight: 440
-  bannerTitleShare: 0.22
   font: {fileID: 0}
   clockFontSize: 64
   counterFontSize: 30
-  bannerTitleFontSize: 64
-  bannerBodyFontSize: 30
   clockFormat: '{0}:{1:00}'
   counterFormat: 'Messes left: {0} / {1}'
   tooToughFormat: '   (+{0} too tough for your tools)'
-  timeUpTitle: Time's up!
-  allCleanTitle: Spotless!
-  bannerBodyFormat: 'Cleaned {0} of {1}
-
-    Time left: {2}{4}{5}
-
-
-    <size={3}>F5
-    / Start to restart</size>'
-  bannerTooToughFormat: '
-
-    Left behind (too tough): {0}'
-  bannerScoreFormat: '
-
-
-    <size=44>Grade {0}</size>
-
-    Points {1:0} + early
-    bonus {2:0}    Pay ${3}'
-  bannerHintFontSize: 22
   textColor: {r: 0.95, g: 0.93, b: 0.88, a: 1}
   warningColor: {r: 1, g: 0.45, b: 0.3, a: 1}
   shadowColor: {r: 0, g: 0, b: 0, a: 0.7}
   shadowOffset: {x: 2, y: -2}
-  bannerColor: {r: 0.06, g: 0.06, b: 0.08, a: 0.88}
-  allCleanColor: {r: 0.55, g: 0.9, b: 0.6, a: 1}

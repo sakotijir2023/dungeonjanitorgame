@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62a0ebbc96f4efe49859d420d75bc561, type: 3}
+  m_Name: InspectorLines
+  m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Inspection.InspectorLines
+  byGrade:
+  - grade: 0
+    lines:
+    - ...Hold on. I'm checking under the rug. ...I'm checking again.
+    - Spotless. Who did you bribe? I want a name.
+    - Thirty years I've done this job. This has never happened. I'm filing a complaint
+      about how suspicious it is.
+    - Perfect. Wonderful. Now my pen has nothing to do. I hope you're happy.
+    - "No. No, there's a speck right\u2014 no. Fine. FINE. It's perfect. Get out."
+  - grade: 1
+    lines:
+    - Almost competent. Don't let it go to your head; there isn't much room in there.
+    - An A. I'm as surprised as you are. Actually, I'm more surprised.
+    - Acceptable. The heroes might even live long enough to notice.
+    - Good work. I'm told I'm supposed to say that occasionally.
+    - Nearly clean. 'Nearly' is doing a lot of heavy lifting there.
+  - grade: 2
+    lines:
+    - Mediocre, but enthusiastically so.
+    - It's fine. 'Fine' is also what I call lukewarm soup.
+    - 'A solid B. Like your personality: forgettable, but not technically a hazard.'
+    - Some of this is clean. I can tell because it stands out.
+    - The heroes will only mostly slip and die. Progress, I suppose.
+  - grade: 3
+    lines:
+    - Average. Deeply, profoundly average. It's almost a talent.
+    - Did you clean this room, or just visit it?
+    - I've seen goblins tidy up better. Goblins eat the furniture.
+    - C. As in 'Could you not?'
+    - Half of this is clean. The other half is a cry for help.
+  - grade: 4
+    lines:
+    - I'd call this cleaning, but I don't lie on official forms.
+    - The mop was right there. Did you two have a falling out?
+    - This room is a liability. So are you.
+    - I'm docking you for the smell alone. Was that you, or the room?
+    - D. For the grade, and for how many messes you seem to have noticed.
+  - grade: 5
+    lines:
+    - Did you clean anything, or just carry the vacuum around for emotional support?
+    - I've graded crime scenes cleaner than this. Some were still in progress.
+    - F. I'd go lower, but the form won't let me.
+    - This dungeon is dirtier than when you arrived. That shouldn't even be possible.
+    - Go home. Think about what you've done. Then don't come back and do it again.
+  nothingCleaned:
+  - You were paid to clean. You cleaned nothing. I almost admire the commitment.
+  - Not one mess. Not one. Were you on a break the entire time, or just a waste of
+    a uniform?
+  tooToughHints:
+  - family: 1
+    lines:
+    - I see you didn't even try to clean that stain, hmm? Maybe stop being a degenerate
+      and invest in your tools.
+    - That stain laughed at your little mop. I heard it. Buy a better one.
+  - family: 0
+    lines:
+    - That dark goo is still glued to the floor. Your pathetic vacuum won't budge
+      it. Upgrade it, or keep embarrassing us both.
+    - The black goo stays, I see. A real janitor would own a real vacuum.
+  genericTooToughHints:
+  - Some of this mess was beyond your sad little toolkit. Spend money on yourself.
+    On tools, I mean. Not snacks.
