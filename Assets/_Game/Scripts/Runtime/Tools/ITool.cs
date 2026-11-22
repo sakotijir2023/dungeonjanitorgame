@@ -1,0 +1,36 @@
+using UnityEngine;
+
+namespace DungeonJanitor.Tools
+{
+    /// <summary>Shared interface every cleaning or setup tool implements.</summary>
+    public interface ITool
+    {
+        ToolDefinition Definition { get; }
+        void OnEquipped();
+        void OnUnequipped();
+        void SetPrimaryHeld(bool held);
+        void SetSecondaryHeld(bool held);
+    }
+
+    /// <summary>Default MonoBehaviour implementation: equipping shows the tool, unequipping hides it.</summary>
+    public abstract class ToolBase : MonoBehaviour, ITool
+    {
+        [SerializeField] ToolDefinition definition;
+
+        public ToolDefinition Definition => definition;
+        protected bool PrimaryHeld { get; private set; }
+        protected bool SecondaryHeld { get; private set; }
+
+        public virtual void OnEquipped() => gameObject.SetActive(true);
+
+        public virtual void OnUnequipped()
+        {
+            PrimaryHeld = false;
+            SecondaryHeld = false;
+            gameObject.SetActive(false);
+        }
+
+        public virtual void SetPrimaryHeld(bool held) => PrimaryHeld = held;
+        public virtual void SetSecondaryHeld(bool held) => SecondaryHeld = held;
+    }
+}

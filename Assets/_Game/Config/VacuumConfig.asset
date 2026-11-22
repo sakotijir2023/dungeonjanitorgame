@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6995ef58d5841a459afe9b30a298951, type: 3}
+  m_Name: VacuumConfig
+  m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Tools.Vacuum.VacuumConfig
+  range: 5
+  coneAngle: 22
+  distanceFalloff: 0.8
+  pullAcceleration: 55
+  lateralDamping: 8
+  swallowRadius: 0.6
+  cleaningSpeed: 1
+  maxHardness: 3
+  spinUpTime: 0.15
+  spinDownTime: 0.25
+  shakeAmount: 0.006
+  shakeFrequency: 28
+  gulpKick: 0.06
+  gulpRecoverTime: 0.08
+  gulpBulge: 1.25
+  particleRate: 80
