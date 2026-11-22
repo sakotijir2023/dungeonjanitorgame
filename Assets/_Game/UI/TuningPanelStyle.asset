@@ -24,7 +24,7 @@ MonoBehaviour:
   valueWidth: 120
   buttonWidth: 200
   smallButtonWidth: 60
-  scrollSensitivity: 30
+  scrollSensitivity: 90
   font: {fileID: 0}
   fontSize: 26
   headerFontSize: 30
@@ -32,6 +32,9 @@ MonoBehaviour:
   valueFormat: 0.###
   title: Tuning  (F1 / View button)
   presetNamePlaceholder: Preset name...
+  searchLabel: Search
+  searchPlaceholder: Type to filter, Enter to jump, then arrow keys...
+  searchLabelWidth: 130
   defaultPresetPrefix: Preset_
   defaultPresetTimeFormat: yyyyMMdd_HHmmss
   panelColor: {r: 0.07, g: 0.07, b: 0.09, a: 0.94}

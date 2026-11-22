@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1750bef085e3d8419b1e6252c4048ea, type: 3}
   m_Name: ToolWheelConfig
   m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Tools.Wheel.ToolWheelConfig
-  mousePointerSpeed: 1
+  mousePointerSpeed: 0.6
   pointerMaxDistance: 120
   mouseDeadzone: 30
   stickDeadzone: 0.45

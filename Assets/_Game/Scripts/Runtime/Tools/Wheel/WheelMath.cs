@@ -24,6 +24,22 @@ namespace DungeonJanitor.Tools.Wheel
             return Mathf.Min(count - 1, Mathf.FloorToInt(relative / wedge));
         }
 
+        /// <summary>
+        /// Like IndexFromDirection, but keeps <paramref name="current"/> until the
+        /// direction is more than <paramref name="stickyDegrees"/> past its border.
+        /// Stops the pick flickering between neighbours when aiming near a border.
+        /// </summary>
+        public static int StickyIndex(Vector2 direction, int count, float firstAngle, int current, float stickyDegrees)
+        {
+            int raw = IndexFromDirection(direction, count, firstAngle);
+            if (current < 0 || current >= count || raw == current || stickyDegrees <= 0f)
+                return raw;
+            float wedge = FullTurn / count;
+            float centre = firstAngle + current * wedge;
+            float offset = Mathf.Abs(Mathf.DeltaAngle(AngleOf(direction), centre));
+            return offset <= wedge * 0.5f + stickyDegrees ? current : raw;
+        }
+
         /// <summary>Unit direction to the centre of wedge <paramref name="index"/> (y up).</summary>
         public static Vector2 DirectionFromIndex(int index, int count, float firstAngle)
         {

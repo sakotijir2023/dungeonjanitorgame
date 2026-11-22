@@ -41,6 +41,7 @@ namespace DungeonJanitor.Tools.Wheel
         public Color backColor = new Color(0.22f, 0.12f, 0.12f, 0.92f);
         public Color currentOutlineColor = new Color(1f, 0.85f, 0.4f, 0.95f);
         public Color textColor = new Color(0.92f, 0.92f, 0.92f, 1f);
+        public Color pointerColor = new Color(1f, 0.85f, 0.4f, 0.9f);
         public Color unavailableTextColor = new Color(0.5f, 0.5f, 0.52f, 1f);
     }
 }

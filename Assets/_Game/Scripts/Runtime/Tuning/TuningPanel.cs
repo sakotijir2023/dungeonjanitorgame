@@ -19,6 +19,7 @@ namespace DungeonJanitor.Tuning
 
         readonly List<Action> refreshers = new List<Action>();
         TuningUIFactory factory;
+        TuningSearch search;
         PresetStore store;
         GameObject canvasRoot;
         Selectable firstSelectable;
@@ -77,24 +78,41 @@ namespace DungeonJanitor.Tuning
             RectTransform panel = factory.CreatePanel(canvas.transform);
             factory.CreateText(panel, style.title, style.titleFontSize, style.textColor, -1f, style.headerHeight);
 
-            var presets = new TuningPresetBar(panel, factory, style, store, CaptureCurrent, ApplyPreset, RevertToStart);
-            firstSelectable = presets.FirstSelectable;
+            new TuningPresetBar(panel, factory, style, store, CaptureCurrent, ApplyPreset, RevertToStart);
+
+            RectTransform searchRow = factory.CreateRow(panel, "Search");
+            factory.CreateText(searchRow, style.searchLabel, style.fontSize, style.headerColor, style.searchLabelWidth);
+            InputField searchField = factory.CreateInputField(searchRow, style.searchPlaceholder);
+            firstSelectable = searchField;
 
             RectTransform content = factory.CreateScrollView(panel, out ScrollRect scrollRect);
             scrollRect.gameObject.AddComponent<ScrollToSelected>();
+            search = new TuningSearch(scrollRect, Select);
+            searchField.onValueChanged.AddListener(search.Apply);
+            searchField.onSubmit.AddListener(_ => search.SelectFirstMatch());
 
             foreach (TuningConfig config in registry.Configs)
             {
                 if (config == null)
                     continue;
-                factory.CreateText(content, config.DisplayName, style.headerFontSize, style.headerColor, -1f, style.headerHeight);
+                Text header = factory.CreateText(content, config.DisplayName, style.headerFontSize, style.headerColor, -1f, style.headerHeight);
+                search.AddConfigHeader(header.gameObject, config.DisplayName);
                 foreach (TuningField field in TuningField.Collect(config))
                 {
                     if (field.Header != null)
-                        factory.CreateText(content, field.Header, style.fontSize, style.subHeaderColor, -1f, style.rowHeight);
+                    {
+                        Text sub = factory.CreateText(content, field.Header, style.fontSize, style.subHeaderColor, -1f, style.rowHeight);
+                        search.AddSubHeader(sub.gameObject, field.Header);
+                    }
                     AddControl(content, field);
                 }
             }
+        }
+
+        static void Select(Selectable selectable)
+        {
+            if (EventSystem.current != null)
+                EventSystem.current.SetSelectedGameObject(selectable.gameObject);
         }
 
         void AddControl(Transform parent, TuningField field)
@@ -105,6 +123,7 @@ namespace DungeonJanitor.Tuning
             if (field.Kind == TuningFieldKind.Bool)
             {
                 Toggle toggle = factory.CreateToggle(row);
+                search.AddControl(row.gameObject, field.Label, toggle);
                 toggle.SetIsOnWithoutNotify(field.GetValue() > 0.5f);
                 toggle.onValueChanged.AddListener(isOn => field.SetValue(isOn ? 1f : 0f));
                 refreshers.Add(() => toggle.SetIsOnWithoutNotify(field.GetValue() > 0.5f));
@@ -112,6 +131,7 @@ namespace DungeonJanitor.Tuning
             }
 
             Slider slider = factory.CreateSlider(row, field.Min, field.Max, field.Kind == TuningFieldKind.Int);
+            search.AddControl(row.gameObject, field.Label, slider);
             Text valueText = factory.CreateText(row, string.Empty, style.fontSize, style.textColor, style.valueWidth);
             valueText.alignment = TextAnchor.MiddleRight;
 

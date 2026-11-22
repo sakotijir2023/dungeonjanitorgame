@@ -83,7 +83,9 @@ namespace DungeonJanitor.Tools.Wheel
             if (!open)
                 return;
 
-            bool ringChanged = navigator.Update(ReadDirection(), Time.unscaledDeltaTime, config.folderOpenDelay);
+            Vector2? direction = ReadDirection();
+            bool ringChanged = navigator.Update(direction, Time.unscaledDeltaTime, config.folderOpenDelay, config.slotStickiness);
+            view.SetPointer(PointerFraction(direction));
             if (ringChanged)
                 ShowRing();
             if (ringChanged || navigator.Hovered != shownHover)
@@ -102,6 +104,14 @@ namespace DungeonJanitor.Tools.Wheel
                 return pointer.magnitude > config.mouseDeadzone ? pointer : (Vector2?)null;
             }
             return look.magnitude > config.stickDeadzone ? look : (Vector2?)null;
+        }
+
+        /// <summary>Where to draw the aiming dot: 0 = centre, 1 = the slot ring.</summary>
+        Vector2 PointerFraction(Vector2? direction)
+        {
+            if (input.LookIsMouse || !direction.HasValue)
+                return pointer / config.pointerMaxDistance;
+            return Vector2.ClampMagnitude(direction.Value, 1f);
         }
 
         void Open()

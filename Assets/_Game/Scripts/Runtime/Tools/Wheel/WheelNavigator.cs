@@ -65,11 +65,11 @@ namespace DungeonJanitor.Tools.Wheel
         /// Feed one frame. Pass null when the player is not pointing anywhere
         /// (the last hover is kept). Returns true if the ring changed.
         /// </summary>
-        public bool Update(Vector2? direction, float deltaTime, float restDelay)
+        public bool Update(Vector2? direction, float deltaTime, float restDelay, float stickyDegrees = 0f)
         {
             if (direction.HasValue)
             {
-                int index = WheelMath.IndexFromDirection(direction.Value, RingCount, RingFirstAngle);
+                int index = WheelMath.StickyIndex(direction.Value, RingCount, RingFirstAngle, Hovered, stickyDegrees);
                 if (index != Hovered)
                 {
                     Hovered = index;

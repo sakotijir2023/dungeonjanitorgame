@@ -32,6 +32,8 @@ namespace DungeonJanitor.Tools.Wheel
         GameObject canvasRoot;
         RectTransform ring;
         Text centerText;
+        Image pointerDot;
+        Vector2 pointerFraction;
         int hovered = -1;
         int visibleCount;
         float openElapsed;
@@ -67,6 +69,8 @@ namespace DungeonJanitor.Tools.Wheel
 
             for (int i = 0; i < MaxSlots; i++)
                 slots.Add(CreateSlot(i));
+
+            pointerDot = CreateImage("PointerDot", ring, style.disc, style.pointerColor);
 
             canvasRoot.SetActive(false);
         }
@@ -124,6 +128,9 @@ namespace DungeonJanitor.Tools.Wheel
         }
 
         public void Hide() => canvasRoot.SetActive(false);
+
+        /// <summary>Aiming dot position: 0 = centre, 1 = on the slot ring.</summary>
+        public void SetPointer(Vector2 fraction) => pointerFraction = fraction;
 
         public void ShowRing(IReadOnlyList<WheelEntry> entries, float firstAngle)
         {
@@ -191,6 +198,10 @@ namespace DungeonJanitor.Tools.Wheel
             float open = config.openTime > 0f ? Mathf.Clamp01(openElapsed / config.openTime) : 1f;
             float eased = 1f - (1f - open) * (1f - open);
             ring.localScale = Vector3.one * Mathf.Lerp(config.openStartScale, 1f, eased);
+
+            pointerDot.rectTransform.anchoredPosition = pointerFraction * config.ringRadius;
+            pointerDot.rectTransform.sizeDelta = Vector2.one * config.pointerDotSize;
+            pointerDot.enabled = config.pointerDotSize > 0f;
 
             float blend = 1f - Mathf.Exp(-config.hoverSpeed * dt);
             for (int i = 0; i < visibleCount; i++)

@@ -24,7 +24,7 @@ namespace DungeonJanitor.Tuning
         public float valueWidth = 120f;
         public float buttonWidth = 200f;
         public float smallButtonWidth = 60f;
-        public float scrollSensitivity = 30f;
+        public float scrollSensitivity = 90f;
 
         [Header("Text")]
         public Font font;
@@ -34,6 +34,9 @@ namespace DungeonJanitor.Tuning
         public string valueFormat = "0.###";
         public string title = "Tuning  (F1 / View button)";
         public string presetNamePlaceholder = "Preset name...";
+        public string searchLabel = "Search";
+        public string searchPlaceholder = "Type to filter, Enter to jump, then arrow keys...";
+        public float searchLabelWidth = 130f;
         public string defaultPresetPrefix = "Preset_";
         public string defaultPresetTimeFormat = "yyyyMMdd_HHmmss";
 

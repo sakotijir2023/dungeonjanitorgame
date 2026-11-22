@@ -50,6 +50,20 @@ namespace DungeonJanitor.Tests
         }
 
         [Test]
+        public void StickyIndex_HoldsSlotJustPastItsBorder()
+        {
+            // Slot 0 spans -22.5..22.5 deg. 27 deg is just inside slot 1.
+            Vector2 justPast = WheelMath.DirectionFromIndex(0, 360, 27f);
+            Assert.That(WheelMath.IndexFromDirection(justPast, Slots, 0f), Is.EqualTo(1));
+            Assert.That(WheelMath.StickyIndex(justPast, Slots, 0f, 0, 8f), Is.EqualTo(0));
+            // Well past the border, it moves on.
+            Vector2 farPast = WheelMath.DirectionFromIndex(0, 360, 35f);
+            Assert.That(WheelMath.StickyIndex(farPast, Slots, 0f, 0, 8f), Is.EqualTo(1));
+            // Nothing hovered yet: no stickiness.
+            Assert.That(WheelMath.StickyIndex(justPast, Slots, 0f, -1, 8f), Is.EqualTo(1));
+        }
+
+        [Test]
         public void ReleasingOnATool_PicksThatSlot()
         {
             WheelNavigator nav = NewNavigator();
