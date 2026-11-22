@@ -8,3 +8,4 @@ Format: `YYYY-MM-DD | config.value: old -> new | reason`
 2026-11-21 | MovementConfig baseline | no change | owner playtested defaults and approved them as-is
 2026-11-21 | VacuumConfig baseline | range 5 m, cone 22 deg, falloff 0.8, pull 55, lateral damping 8, swallow radius 0.6, cleaning speed 1, max hardness 3, spin-up 0.15 s / down 0.25 s, gulp kick 0.06 m | first pass: goo should visibly fight, then snap in
 2026-11-21 | GooConfig baseline | mass 0.4, tug stretch 0.15 -> 0.7 as it loosens, wobble 0.08 @ 9 Hz, loosen decay 0.4/s, break-free pop 2.5 m/s, spring 180 / damping 9, swallow 0.1 s | jelly that strains toward the nozzle, then pops
+2026-11-21 | GooConfig.drag: 0.6 -> 0.83, GooConfig.tugWobbleAmount: 0.08 -> 0.10 | owner playtest (preset "T"): slightly heavier flight, more visible struggle on stuck goo. Owner confirms: dark (hard) goo should take a LONG time without upgrades; easy goo should stay effortless

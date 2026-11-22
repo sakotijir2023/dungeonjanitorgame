@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: GooConfig
   m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Messes.GooConfig
   mass: 0.4
-  drag: 0.6
+  drag: 0.83391637
   tugStretchAtStart: 0.15
   tugStretchAtBreak: 0.7
-  tugWobbleAmount: 0.08
+  tugWobbleAmount: 0.100467704
   tugWobbleFrequency: 9
   loosenDecay: 0.4
   breakFreeImpulse: 2.5
