@@ -21,6 +21,8 @@ namespace DungeonJanitor.Input
         const string UseName = "Use";
         const string SecondaryName = "Secondary";
         const string ToolWheelName = "ToolWheel";
+        const string ToolSlotName = "ToolSlot";
+        const string CycleToolName = "CycleTool";
         const string ToggleTuningName = "ToggleTuningPanel";
 
         [SerializeField] InputActionAsset actions;
@@ -34,9 +36,15 @@ namespace DungeonJanitor.Input
         InputAction use;
         InputAction secondary;
         InputAction toolWheel;
+        InputAction toolSlot;
+        InputAction cycleTool;
         InputAction toggleTuning;
 
         public event Action JumpPressed;
+        /// <summary>Number key shortcut; zero-based slot index.</summary>
+        public event Action<int> ToolSlotPressed;
+        /// <summary>D-pad left/right; -1 or +1.</summary>
+        public event Action<int> ToolCyclePressed;
 
         public Vector2 Move => move.ReadValue<Vector2>();
         public Vector2 Look => look.ReadValue<Vector2>();
@@ -64,12 +72,16 @@ namespace DungeonJanitor.Input
             use = playerMap.FindAction(UseName, true);
             secondary = playerMap.FindAction(SecondaryName, true);
             toolWheel = playerMap.FindAction(ToolWheelName, true);
+            toolSlot = playerMap.FindAction(ToolSlotName, true);
+            cycleTool = playerMap.FindAction(CycleToolName, true);
             toggleTuning = debugMap.FindAction(ToggleTuningName, true);
         }
 
         void OnEnable()
         {
             jump.performed += OnJump;
+            toolSlot.performed += OnToolSlot;
+            cycleTool.performed += OnCycleTool;
             toggleTuning.performed += OnToggleTuning;
             EventBus<TuningPanelVisibilityChanged>.Subscribe(OnTuningPanelVisibility);
             playerMap.Enable();
@@ -79,6 +91,8 @@ namespace DungeonJanitor.Input
         void OnDisable()
         {
             jump.performed -= OnJump;
+            toolSlot.performed -= OnToolSlot;
+            cycleTool.performed -= OnCycleTool;
             toggleTuning.performed -= OnToggleTuning;
             EventBus<TuningPanelVisibilityChanged>.Unsubscribe(OnTuningPanelVisibility);
             playerMap.Disable();
@@ -86,6 +100,20 @@ namespace DungeonJanitor.Input
         }
 
         void OnJump(InputAction.CallbackContext _) => JumpPressed?.Invoke();
+
+        void OnToolSlot(InputAction.CallbackContext context)
+        {
+            // Bound to the digit keys; the control name is the digit ("1".."8").
+            if (int.TryParse(context.control.name, out int digit))
+                ToolSlotPressed?.Invoke(digit - 1);
+        }
+
+        void OnCycleTool(InputAction.CallbackContext context)
+        {
+            float value = context.ReadValue<float>();
+            if (value != 0f)
+                ToolCyclePressed?.Invoke(value > 0f ? 1 : -1);
+        }
 
         void OnToggleTuning(InputAction.CallbackContext _) =>
             EventBus<TuningPanelToggleRequested>.Raise(new TuningPanelToggleRequested());

@@ -55,6 +55,8 @@ namespace DungeonJanitor.Messes
                 return;
             }
             Mess mess = Instantiate(entry.prefab, point.transform.position, point.transform.rotation, transform);
+            // Spawn points can be scaled to make bigger or smaller messes.
+            mess.transform.localScale = Vector3.Scale(entry.prefab.transform.localScale, point.transform.lossyScale);
             mess.Configure(hardness);
             spawned.Add(mess);
         }

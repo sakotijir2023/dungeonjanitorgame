@@ -17,3 +17,7 @@ MonoBehaviour:
     prefab: {fileID: 5185260891053672590, guid: fa6d8d6bf007d2741a5801f948bc3405, type: 3}
     minHardness: 0
     maxHardness: 2.5
+  - family: 1
+    prefab: {fileID: 4738431416142656377, guid: b95ec27d09329f24e844d2bc622722cf, type: 3}
+    minHardness: 0
+    maxHardness: 2.5

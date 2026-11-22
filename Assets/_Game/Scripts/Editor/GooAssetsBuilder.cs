@@ -8,7 +8,6 @@ namespace DungeonJanitor.Editor
     public static class GooAssetsBuilder
     {
         public const string GooConfigPath = "Assets/_Game/Config/GooConfig.asset";
-        public const string CatalogPath = "Assets/_Game/Config/MessCatalog.asset";
         const string PrefabPath = "Assets/_Game/Prefabs/Messes/Goo.prefab";
         const string MaterialPath = "Assets/_Game/Art/Materials/Goo.mat";
         const string PhysicsMaterialPath = "Assets/_Game/Art/Materials/Goo.physicMaterial";
@@ -23,23 +22,15 @@ namespace DungeonJanitor.Editor
 
         public static float BlobRadius => BlobDiameter * 0.5f;
 
-        public static MessCatalog Build()
+        /// <summary>Builds the goo prefab and returns its catalog entry.</summary>
+        public static MessCatalog.Entry Build()
         {
             var config = EditorAssets.LoadOrCreate<GooConfig>(GooConfigPath);
-            Mess prefab = BuildPrefab(config);
-
-            var catalog = EditorAssets.LoadOrCreate<MessCatalog>(CatalogPath);
-            catalog.SetEntries(new[]
+            return new MessCatalog.Entry
             {
-                new MessCatalog.Entry
-                {
-                    family = MessFamily.Goo, prefab = prefab,
-                    minHardness = SeededMinHardness, maxHardness = SeededMaxHardness,
-                },
-            });
-            EditorUtility.SetDirty(catalog);
-            AssetDatabase.SaveAssets();
-            return catalog;
+                family = MessFamily.Goo, prefab = BuildPrefab(config),
+                minHardness = SeededMinHardness, maxHardness = SeededMaxHardness,
+            };
         }
 
         static Mess BuildPrefab(GooConfig config)

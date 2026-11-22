@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b32644fc8165ea4a971bea012750b6a, type: 3}
+  m_Name: StainConfig
+  m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Messes.StainConfig
+  resolution: 64
+  baseRadius: 0.36
+  edgeWobble: 0.1
+  edgeSoftness: 0.05
+  speckle: 0.35
+  opacity: 0.92
+  hardnessForDarkest: 3
+  softColor: {r: 0.38, g: 0.29, b: 0.18, a: 1}
+  hardColor: {r: 0.06, g: 0.05, b: 0.05, a: 1}
+  cleanThreshold: 0.05
+  finishFadeTime: 0.3

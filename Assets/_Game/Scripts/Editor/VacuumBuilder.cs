@@ -1,27 +1,19 @@
-using DungeonJanitor.Config;
-using DungeonJanitor.Input;
 using DungeonJanitor.Messes;
-using DungeonJanitor.Player;
 using DungeonJanitor.Tools;
 using DungeonJanitor.Tools.Vacuum;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace DungeonJanitor.Editor
 {
-    /// <summary>
-    /// Adds the vacuum, tool holder, crosshair and goo spawn layout to the test room
-    /// whenever it is built.
-    /// </summary>
-    [InitializeOnLoad]
-    public static class VacuumSceneSetup
+    /// <summary>Builds the grey-box vacuum viewmodel under the player camera.</summary>
+    public static class VacuumBuilder
     {
-        const string VacuumConfigPath = "Assets/_Game/Config/VacuumConfig.asset";
-        const string VacuumDefinitionPath = "Assets/_Game/Config/Tools/Vacuum.asset";
+        const string ConfigPath = "Assets/_Game/Config/VacuumConfig.asset";
+        const string DefinitionPath = "Assets/_Game/Config/Tools/Vacuum.asset";
         const string MaterialFolder = "Assets/_Game/Art/Materials";
-        const string VacuumId = "vacuum";
-        const string VacuumName = "Vacuum";
+        const string ToolId = "vacuum";
+        const string ToolName = "Vacuum";
 
         // Grey-box viewmodel layout (camera space, meters).
         static readonly Vector3 ModelOffset = new Vector3(0.28f, -0.3f, 0.45f);
@@ -40,50 +32,11 @@ namespace DungeonJanitor.Editor
         const float AirConeLength = 3.5f;
         const float AirStretch = 3f;
 
-        // Crosshair.
-        const float CrosshairSize = 6f;
-        static readonly Color CrosshairColor = new Color(1f, 1f, 1f, 0.8f);
-
-        static VacuumSceneSetup()
+        public static VacuumTool Build(Transform cameraTransform)
         {
-            TestRoomBuilderHooks.SceneBuilt += AddToScene;
-        }
+            var config = EditorAssets.LoadOrCreate<VacuumConfig>(ConfigPath);
+            ToolDefinition definition = ToolDefinitions.LoadOrCreate(DefinitionPath, ToolId, ToolName, MessFamily.Goo);
 
-        static void AddToScene()
-        {
-            MessCatalog catalog = GooAssetsBuilder.Build();
-            var config = EditorAssets.LoadOrCreate<VacuumConfig>(VacuumConfigPath);
-            ToolDefinition definition = LoadOrCreateDefinition();
-            ConfigRegistryAutoFill.Refresh();
-
-            var look = Object.FindFirstObjectByType<FirstPersonLook>();
-            Camera camera = look.GetComponentInChildren<Camera>();
-            VacuumTool vacuum = BuildVacuum(camera.transform, config, definition);
-
-            var toolUser = look.gameObject.AddComponent<ToolUser>();
-            TestRoomBuilder.SetRef(toolUser, "input", look.GetComponent<InputReader>());
-            EditorAssets.SetValue(toolUser, "tools", p =>
-            {
-                p.arraySize = 1;
-                p.GetArrayElementAtIndex(0).objectReferenceValue = vacuum;
-            });
-
-            BuildCrosshair();
-            GooLayout.Build(catalog);
-        }
-
-        static ToolDefinition LoadOrCreateDefinition()
-        {
-            var definition = EditorAssets.LoadOrCreate<ToolDefinition>(VacuumDefinitionPath);
-            definition.id = VacuumId;
-            definition.displayName = VacuumName;
-            definition.handles = new[] { MessFamily.Goo };
-            EditorUtility.SetDirty(definition);
-            return definition;
-        }
-
-        static VacuumTool BuildVacuum(Transform cameraTransform, VacuumConfig config, ToolDefinition definition)
-        {
             Material bodyMaterial = EditorAssets.LoadOrCreateMaterial($"{MaterialFolder}/Vacuum_Body.mat",
                 EditorAssets.LitShader, new Color(0.25f, 0.55f, 0.6f), 0.4f);
             Material nozzleMaterial = EditorAssets.LoadOrCreateMaterial($"{MaterialFolder}/Vacuum_Nozzle.mat",
@@ -91,7 +44,7 @@ namespace DungeonJanitor.Editor
             Material airMaterial = EditorAssets.LoadOrCreateMaterial($"{MaterialFolder}/Vacuum_Air.mat",
                 EditorAssets.ParticleUnlitShader, new Color(0.85f, 0.95f, 1f), 0f);
 
-            var root = new GameObject(VacuumName);
+            var root = new GameObject(ToolName);
             root.transform.SetParent(cameraTransform, false);
 
             var model = new GameObject("Model").transform;
@@ -151,19 +104,19 @@ namespace DungeonJanitor.Editor
             renderer.lengthScale = AirStretch;
             return particles;
         }
+    }
 
-        static void BuildCrosshair()
+    /// <summary>Creates or updates a ToolDefinition asset.</summary>
+    public static class ToolDefinitions
+    {
+        public static ToolDefinition LoadOrCreate(string path, string id, string displayName, params MessFamily[] handles)
         {
-            var canvasGo = new GameObject("HUD", typeof(Canvas), typeof(CanvasScaler));
-            canvasGo.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-
-            var dot = new GameObject("Crosshair", typeof(RectTransform), typeof(Image));
-            var rect = (RectTransform)dot.transform;
-            rect.SetParent(canvasGo.transform, false);
-            rect.sizeDelta = Vector2.one * CrosshairSize;
-            var image = dot.GetComponent<Image>();
-            image.color = CrosshairColor;
-            image.raycastTarget = false;
+            var definition = EditorAssets.LoadOrCreate<ToolDefinition>(path);
+            definition.id = id;
+            definition.displayName = displayName;
+            definition.handles = handles;
+            EditorUtility.SetDirty(definition);
+            return definition;
         }
     }
 }

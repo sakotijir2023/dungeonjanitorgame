@@ -19,6 +19,26 @@ namespace DungeonJanitor.Tools
 
         public IReadOnlyList<ToolBase> Tools => tools;
 
+        void OnEnable()
+        {
+            input.ToolSlotPressed += Equip;
+            input.ToolCyclePressed += Cycle;
+        }
+
+        void OnDisable()
+        {
+            input.ToolSlotPressed -= Equip;
+            input.ToolCyclePressed -= Cycle;
+        }
+
+        void Cycle(int direction)
+        {
+            if (tools.Count == 0)
+                return;
+            int current = Mathf.Max(0, tools.IndexOf(equipped));
+            Equip((current + direction + tools.Count) % tools.Count);
+        }
+
         void Start()
         {
             foreach (ToolBase tool in tools)
