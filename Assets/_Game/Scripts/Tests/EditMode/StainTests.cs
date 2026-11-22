@@ -64,14 +64,5 @@ namespace DungeonJanitor.Tests
             Assert.That(a[(Resolution / 2) * Resolution + Resolution / 2], Is.GreaterThan(0.2f), "center");
             Assert.That(a[0], Is.EqualTo(0f), "corner");
         }
-
-        [Test]
-        public void ScrubFactor_IdleAndFullSpeed()
-        {
-            Assert.That(ScrubMath.ScrubFactor(0f, 2f, 0.3f), Is.EqualTo(0.3f).Within(Tolerance));
-            Assert.That(ScrubMath.ScrubFactor(2f, 2f, 0.3f), Is.EqualTo(1f).Within(Tolerance));
-            Assert.That(ScrubMath.ScrubFactor(5f, 2f, 0.3f), Is.EqualTo(1f).Within(Tolerance));
-            Assert.That(ScrubMath.ScrubFactor(1f, 2f, 0.3f), Is.EqualTo(0.65f).Within(Tolerance));
-        }
     }
 }

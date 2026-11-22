@@ -6,14 +6,17 @@ using UnityEngine;
 namespace DungeonJanitor.Tools.Mop
 {
     /// <summary>
-    /// Hold Use to put the mop head down where you aim and scrub. Moving the
-    /// head cleans faster than holding it still.
+    /// Tap Use for a hard scrub stroke where you aim; hold it to sweep side to
+    /// side across where you aim. The motion itself lives in MopMotion; this
+    /// script places the head on the floor and cleans what is under it.
     /// </summary>
     public sealed class MopTool : ToolBase, IScrubSource
     {
         const int MaxTargets = 32;
         // Keeps the head just above the floor so it never z-fights or clips.
         const float HeadHover = 0.02f;
+        // How far above/below a swung-out head position to look for floor (m).
+        const float FloorProbeHeight = 0.5f;
 
         [SerializeField] MopConfig config;
         [SerializeField] Transform aim;
@@ -21,6 +24,7 @@ namespace DungeonJanitor.Tools.Mop
         [SerializeField] Transform head;
 
         readonly Collider[] overlapBuffer = new Collider[MaxTargets];
+        MopMotion motion;
         Vector3 headPosition;
         Vector3 floorNormal = Vector3.up;
         bool initialized;
@@ -31,28 +35,43 @@ namespace DungeonJanitor.Tools.Mop
         public bool OnFloor { get; private set; }
         /// <summary>True while the head is down and touching at least one stain.</summary>
         public bool TouchingMess { get; private set; }
-        /// <summary>0..1 how vigorously you are scrubbing right now.</summary>
-        public float ScrubFactor { get; private set; }
+        /// <summary>0..1 how much water should fly right now.</summary>
+        public float Splash => OnFloor ? motion.Splash : 0f;
 
         /// <summary>Raised when a stain is finished, with its position.</summary>
         public event Action<Vector3> StainCleaned;
+        /// <summary>Raised at the peak of each stroke that lands on the floor, with the head position.</summary>
+        public event Action<Vector3> StrokeLanded;
+
+        void Awake() => motion = new MopMotion(config);
 
         public override void OnEquipped()
         {
             base.OnEquipped();
             initialized = false;
+            motion.Reset();
         }
 
         public override void OnUnequipped()
         {
             OnFloor = false;
             TouchingMess = false;
+            motion?.Reset();
             base.OnUnequipped();
+        }
+
+        public override void SetPrimaryHeld(bool held)
+        {
+            if (held && !PrimaryHeld)
+                motion.Press();
+            base.SetPrimaryHeld(held);
         }
 
         void Update()
         {
             float dt = Time.deltaTime;
+            motion.Tick(PrimaryHeld, dt);
+
             Vector3 target = FindHeadTarget();
             if (!initialized)
             {
@@ -65,30 +84,44 @@ namespace DungeonJanitor.Tools.Mop
             HeadVelocity = dt > 0f ? (headPosition - previous) / dt : Vector3.zero;
             head.position = headPosition;
 
-            ScrubFactor = OnFloor ? ScrubMath.ScrubFactor(HeadVelocity.magnitude, config.speedForFullScrub, config.idleScrubFraction) : 0f;
-            TouchingMess = OnFloor && ScrubTargets(dt);
+            TouchingMess = OnFloor && motion.Power > 0f && ScrubTargets(dt);
+            if (OnFloor && motion.StrokePeakedThisTick)
+                StrokeLanded?.Invoke(headPosition);
         }
 
         Vector3 FindHeadTarget()
         {
             OnFloor = false;
             floorNormal = Vector3.up;
-            if (PrimaryHeld && Physics.Raycast(aim.position, aim.forward, out RaycastHit hit, config.reach,
-                    Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
-                && hit.normal.y >= config.minFloorFlatness)
-            {
-                OnFloor = true;
-                floorNormal = hit.normal;
-                return hit.point + hit.normal * HeadHover;
-            }
-            return headRest.position;
+            bool active = motion.Current != MopMotion.Mode.Idle;
+            if (!active || !RaycastFloor(aim.position, aim.forward, config.reach, out RaycastHit hit))
+                return headRest.position;
+
+            OnFloor = true;
+            floorNormal = hit.normal;
+            Vector3 forward = Vector3.ProjectOnPlane(aim.forward, hit.normal).normalized;
+            Vector3 right = Vector3.Cross(hit.normal, forward);
+            Vector3 swung = hit.point + right * motion.Offset.x + forward * motion.Offset.y;
+
+            // Follow the floor under the swung-out head; if there is none (a wall
+            // or a ledge), stay on the aim point instead.
+            Vector3 point = RaycastFloor(swung + hit.normal * FloorProbeHeight, -hit.normal, FloorProbeHeight * 2f,
+                out RaycastHit under) ? under.point : hit.point;
+            return point + hit.normal * HeadHover;
+        }
+
+        bool RaycastFloor(Vector3 origin, Vector3 direction, float distance, out RaycastHit hit)
+        {
+            return Physics.Raycast(origin, direction, out hit, distance, Physics.DefaultRaycastLayers,
+                       QueryTriggerInteraction.Ignore)
+                   && hit.normal.y >= config.minFloorFlatness;
         }
 
         bool ScrubTargets(float dt)
         {
-            int count = Physics.OverlapSphereNonAlloc(headPosition, config.headRadius, overlapBuffer,
+            int count = Physics.OverlapSphereNonAlloc(headPosition, motion.Radius, overlapBuffer,
                 Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide);
-            var context = new ScrubContext(this, headPosition, config.headRadius, config.cleaningSpeed * ScrubFactor,
+            var context = new ScrubContext(this, headPosition, motion.Radius, config.cleaningSpeed * motion.Power,
                 config.maxHardness, config.brushFalloff, dt);
 
             bool touched = false;

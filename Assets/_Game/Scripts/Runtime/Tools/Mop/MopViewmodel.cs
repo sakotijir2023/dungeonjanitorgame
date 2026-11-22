@@ -5,8 +5,8 @@ namespace DungeonJanitor.Tools.Mop
 {
     /// <summary>
     /// Mop visuals: stretches the handle from your hands to the head, leans the
-    /// head into its movement, splashes water while scrubbing and bursts when a
-    /// stain is finished.
+    /// head into its movement, splashes water while cleaning, jolts and splashes
+    /// at the peak of each stroke, and bursts when a stain is finished.
     /// </summary>
     public sealed class MopViewmodel : MonoBehaviour
     {
@@ -24,14 +24,27 @@ namespace DungeonJanitor.Tools.Mop
         float kick;
 
         void Awake() => handsRest = hands.localPosition;
-        void OnEnable() => tool.StainCleaned += OnStainCleaned;
-        void OnDisable() => tool.StainCleaned -= OnStainCleaned;
-
-        void OnStainCleaned(Vector3 position)
+        void OnEnable()
         {
-            kick = config.cleanKick;
+            tool.StainCleaned += OnStainCleaned;
+            tool.StrokeLanded += OnStrokeLanded;
+        }
+
+        void OnDisable()
+        {
+            tool.StainCleaned -= OnStainCleaned;
+            tool.StrokeLanded -= OnStrokeLanded;
+        }
+
+        void OnStainCleaned(Vector3 position) => Burst(position, config.cleanKick, config.cleanBurstCount);
+
+        void OnStrokeLanded(Vector3 position) => Burst(position, config.strokeKick, config.strokeBurstCount);
+
+        void Burst(Vector3 position, float kickAmount, int droplets)
+        {
+            kick = Mathf.Max(kick, kickAmount);
             var emit = new ParticleSystem.EmitParams { position = position, applyShapeToPosition = true };
-            splash.Emit(emit, config.cleanBurstCount);
+            splash.Emit(emit, droplets);
         }
 
         void LateUpdate()
@@ -43,7 +56,7 @@ namespace DungeonJanitor.Tools.Mop
             LeanHead();
 
             ParticleSystem.EmissionModule emission = splash.emission;
-            emission.rateOverTime = tool.TouchingMess ? config.splashRate * tool.ScrubFactor : 0f;
+            emission.rateOverTime = tool.TouchingMess ? config.splashRate * tool.Splash : 0f;
         }
 
         void StretchHandle(Vector3 from, Vector3 to)

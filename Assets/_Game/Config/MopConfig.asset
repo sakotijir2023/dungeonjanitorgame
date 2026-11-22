@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Tools.Mop.MopConfig
   reach: 3.2
   headRadius: 0.35
-  headFollowTime: 0.07
+  headFollowTime: 0.04
   minFloorFlatness: 0.6
   cleaningSpeed: 1
   maxHardness: 3

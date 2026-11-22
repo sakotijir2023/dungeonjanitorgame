@@ -39,17 +39,4 @@ namespace DungeonJanitor.Tools.Mop
     {
         void NotifyCleaned(Mess mess, Vector3 position);
     }
-
-    public static class ScrubMath
-    {
-        /// <summary>
-        /// How hard you are scrubbing, 0..1: holding still gives idleFraction,
-        /// moving the mop at fullSpeed or faster gives 1.
-        /// </summary>
-        public static float ScrubFactor(float headSpeed, float fullSpeed, float idleFraction)
-        {
-            float motion = fullSpeed > 0f ? Mathf.Clamp01(headSpeed / fullSpeed) : 1f;
-            return Mathf.Lerp(Mathf.Clamp01(idleFraction), 1f, motion);
-        }
-    }
 }
