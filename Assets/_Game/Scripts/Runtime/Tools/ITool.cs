@@ -1,3 +1,5 @@
+using DungeonJanitor.Core;
+using DungeonJanitor.Messes;
 using UnityEngine;
 
 namespace DungeonJanitor.Tools
@@ -34,6 +36,19 @@ namespace DungeonJanitor.Tools
         }
 
         public virtual void SetPrimaryHeld(bool held) => PrimaryHeld = held;
+
+        /// <summary>
+        /// Call while working on a mess. If it is beyond this tool, tells the
+        /// player (via a popup) so they don't waste time. Returns true if too tough.
+        /// </summary>
+        protected bool ReportIfTooTough(Mess mess)
+        {
+            if (mess == null || mess.IsCleaned || mess.Hardness <= MaxHardness)
+                return false;
+            string toolName = definition != null ? definition.displayName : name;
+            EventBus<TooToughTouched>.Raise(new TooToughTouched { ToolName = toolName, Family = mess.Family });
+            return true;
+        }
         public virtual void SetSecondaryHeld(bool held) => SecondaryHeld = held;
     }
 }

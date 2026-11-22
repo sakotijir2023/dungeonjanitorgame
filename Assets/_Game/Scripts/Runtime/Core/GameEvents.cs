@@ -25,6 +25,13 @@ namespace DungeonJanitor.Core
         public Vector3 Position;
     }
 
+    /// <summary>A tool is working on a mess it can't handle (raised every frame of contact).</summary>
+    public struct TooToughTouched
+    {
+        public string ToolName;
+        public MessFamily Family;
+    }
+
     /// <summary>The player switched tools.</summary>
     public struct ToolEquipped
     {

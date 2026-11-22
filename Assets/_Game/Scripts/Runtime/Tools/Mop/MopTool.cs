@@ -131,6 +131,8 @@ namespace DungeonJanitor.Tools.Mop
             {
                 if (!overlapBuffer[i].TryGetComponent(out IScrubTarget target))
                     continue;
+                if (overlapBuffer[i].TryGetComponent(out Mess mess))
+                    ReportIfTooTough(mess);
                 target.Scrub(context);
                 touched = true;
             }

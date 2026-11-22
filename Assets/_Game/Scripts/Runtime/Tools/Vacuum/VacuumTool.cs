@@ -72,6 +72,8 @@ namespace DungeonJanitor.Tools.Vacuum
                 if (strength <= 0f)
                     continue;
 
+                if (target is Component component && component.TryGetComponent(out Mess mess))
+                    ReportIfTooTough(mess);
                 target.ReceiveSuction(new SuctionContext(this, nozzle, strength, config.pullAcceleration,
                     config.lateralDamping, config.cleaningSpeed, config.maxHardness, config.swallowRadius,
                     Time.fixedDeltaTime));
