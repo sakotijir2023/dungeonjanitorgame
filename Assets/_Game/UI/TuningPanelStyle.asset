@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82b7bcb9d8b602e4bb32f9aeac5e8dc3, type: 3}
+  m_Name: TuningPanelStyle
+  m_EditorClassIdentifier: DungeonJanitor::DungeonJanitor.Tuning.TuningPanelStyle
+  referenceResolution: {x: 1920, y: 1080}
+  sortingOrder: 1000
+  panelWidth: 780
+  panelMargin: 24
+  padding: 14
+  spacing: 4
+  rowHeight: 32
+  headerHeight: 40
+  labelWidth: 300
+  valueWidth: 90
+  buttonWidth: 150
+  smallButtonWidth: 44
+  scrollSensitivity: 30
+  font: {fileID: 0}
+  fontSize: 18
+  headerFontSize: 22
+  titleFontSize: 26
+  valueFormat: 0.###
+  title: Tuning  (F1 / View button)
+  presetNamePlaceholder: Preset name...
+  defaultPresetPrefix: Preset_
+  defaultPresetTimeFormat: yyyyMMdd_HHmmss
+  panelColor: {r: 0.07, g: 0.07, b: 0.09, a: 0.94}
+  textColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
+  headerColor: {r: 0.55, g: 0.85, b: 0.6, a: 1}
+  subHeaderColor: {r: 0.7, g: 0.7, b: 0.75, a: 1}
+  sliderBackgroundColor: {r: 0.2, g: 0.2, b: 0.24, a: 1}
+  sliderFillColor: {r: 0.35, g: 0.6, b: 0.4, a: 1}
+  handleColor: {r: 0.92, g: 0.92, b: 0.92, a: 1}
+  buttonColor: {r: 0.22, g: 0.22, b: 0.27, a: 1}
+  inputColor: {r: 0.15, g: 0.15, b: 0.18, a: 1}
+  selectedTint: {r: 1, g: 0.85, b: 0.4, a: 1}
